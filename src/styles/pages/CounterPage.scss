@@ -1,0 +1,89 @@
+@charset "utf-8";
+@use "../common/params.scss" as params;
+@use "../common/mixins.scss" as mixins;
+
+//* * * * * * * * * * CounterPage * * * * * * * * * *
+.counter-page {
+  @include mixins.page-common-styles;
+  &__title {
+    text-align: center;
+    margin: 1rem 0 3rem 0;
+  }
+
+  &__counter-containers {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin: 0 auto 5rem auto;
+
+    &__title {
+      margin: 0 2rem;
+      padding-top: 1rem;
+    }
+
+    &__button-containers {
+      display: flex;
+    }
+
+    &__button {
+      appearance: none;
+      background: none;
+      font-size: 32px;
+      padding-left: 12px;
+      padding-right: 12px;
+      outline: none;
+      border: 2px solid transparent;
+      padding-bottom: 4px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.15s;
+      margin: 1rem 5rem;
+    }
+
+    &__value {
+      font-size: 78px;
+      padding-left: 16px;
+      padding-right: 16px;
+      margin-top: 2px;
+      font-family: "Courier New", Courier, monospace;
+    }
+  }
+
+  // Redux
+  .title-redux {
+    color: rgb(112, 76, 182);
+  }
+  .counter-redux {
+    border: 1px solid rgb(112, 76, 182);
+  }
+  .button-redux {
+    color: rgb(112, 76, 182);
+    background-color: rgba(112, 76, 182, 0.1);
+  }
+  .value-redux {
+    color: rgb(112, 76, 182);
+  }
+
+  // React
+  .counter-react {
+    border: 1px solid rgb(41, 47, 56);
+  }
+  .title-react {
+    color: rgb(41, 47, 56);
+  }
+  .button-react {
+    color: rgb(41, 47, 56);
+    background-color: rgba(41, 47, 56, 0.1);
+  }
+  .value-react {
+    color: rgb(41, 47, 56);
+  }
+}

@@ -1,0 +1,14 @@
+@charset "utf-8";
+
+/* 各ページ共通のスタイル */
+@mixin page-common-styles {
+  overflow: hidden;
+}
+
+/* フレキシブルボックス */
+@mixin flex($direction: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
