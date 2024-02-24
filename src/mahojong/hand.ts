@@ -80,13 +80,13 @@ export class Hand {
     const paiStrs = menzenPais.match(/[mpsz]\d+/g) || [];
     for (let paiStr of paiStrs) {
       const s = paiStr[0] as "m" | "p" | "s" | "z";
-      for (let paiNum of paiStr.match(/\d/g) || []) {
-        const paiId = Number(paiNum); // 牌のID(0 ~ 9)を取得
+      for (let n of paiStr.match(/\d/g) || []) {
+        const paiId = Number(n); // 牌のID(0 ~ 9)を取得
         if (s === "z" && (paiId < 1 || 7 < paiId)) {
           // 字牌に0, 8, 9はないので無視
           continue;
         }
-        haipai.push(s + paiNum);
+        haipai.push(s + n);
       }
     }
 
@@ -210,38 +210,39 @@ export class Hand {
   public toPaishi(): Paishi {
     // 伏せ牌を追加する (ツモ牌が伏せ牌の場合はあとで追加する)
     let paishi = "_".repeat(
-      this._menzenPais._ + (this._tsumoPai == "_" ? -1 : 0)
+      this._menzenPais._ + (this._tsumoPai === "_" ? -1 : 0)
     );
 
     // 萬子・筒子・索子・字牌の牌姿を作る
     const paiTypes: ("m" | "p" | "s" | "z")[] = ["m", "p", "s", "z"];
-    for (let mpsz of paiTypes) {
-      let pai: string = mpsz; // 種類を表す文字(m, p, s, z)を追加
-      let menzanPaisOfType = this._menzenPais[mpsz];
-      let numRedPai = mpsz === "z" ? 0 : menzanPaisOfType[0]; // 赤牌の枚数
+    for (let s of paiTypes) {
+      let pai: string = s; // 種類を表す文字(m, p, s, z)を追加
+      const menzanPais = this._menzenPais[s];
+      let numRedPai = s === "z" ? 0 : menzanPais[0]; // 赤牌の枚数
 
       // 1~9 (字牌は1~7)について牌姿を作っていく
-      for (let n = 1; n < menzanPaisOfType.length; n++) {
-        let numPai = menzanPaisOfType[n];
+      for (let n = 1; n < menzanPais.length; n++) {
+        let numPai = menzanPais[n];
 
         // 処理中の牌がツモ牌の場合は後で追加する
-        if (this._tsumoPai !== null) {
-          if (mpsz + n.toString() === this._tsumoPai) {
+        if (this._tsumoPai) {
+          if (s + n.toString() === this._tsumoPai) {
             numPai--;
           }
-          if (n === 5 && mpsz + "0" === this._tsumoPai) {
+
+          if (n === 5 && s + "0" === this._tsumoPai) {
             numPai--;
             numRedPai--;
           }
+        }
 
-          // 赤牌を考慮して牌を追加する
-          for (let i = 0; i < numPai; i++) {
-            if (n == 5 && numRedPai > 0) {
-              pai += "0";
-              numRedPai--;
-            } else {
-              pai += n.toString();
-            }
+        // 赤牌を考慮して牌を追加する
+        for (let i = 0; i < numPai; i++) {
+          if (n === 5 && numRedPai > 0) {
+            pai += "0";
+            numRedPai--;
+          } else {
+            pai += n.toString();
           }
         }
       }
@@ -611,7 +612,7 @@ export class Hand {
    * 立直後は空配列を返す。
    * ポンすると多牌になる場合は null を返す。
    */
-  public getPonCandidates(pai: Pai): Mentsu[] | null {
+  public getPonCandidates(pai: Pai | string): Mentsu[] | null {
     // ツモ直後の場合、多牌となるのでnullを返す
     if (this._tsumoPai) return null;
 
@@ -652,7 +653,9 @@ export class Hand {
    * 立直後は送りカンを含まない。
    * カンすると少牌あるいは多牌になる場合はnullを返す。
    */
-  public getKanCandidates(paiOrUndefined: Pai | undefined): Mentsu[] | null {
+  public getKanCandidates(
+    paiOrUndefined: Pai | string | undefined
+  ): Mentsu[] | null {
     let kanCandidates: Mentsu[] = [];
 
     // 大明カンの場合
