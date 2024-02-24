@@ -52,4 +52,10 @@ export type Jihai = "z1" | "z2" | "z3" | "z4" | "z5" | "z6" | "z7";
 /** 牌 */
 export type Pai = ManzuPai | PinzuPai | SozuPai | Jihai;
 
+/** 牌姿を表現する文字列 */
+export type Paishi = string;
+
+/** 面子を表現する文字列 */
+export type Mentsu = string;
+
 export default Pai;
