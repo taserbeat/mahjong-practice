@@ -1,5 +1,23 @@
 import Pai, { Mentsu, Paishi } from "./pai";
 
+/** 副露していない手牌の種類と枚数の型 */
+export type MenzenPais = {
+  /** 伏せられた牌 (対局相手の手牌で使う) */
+  _: number;
+
+  /** 萬子 */
+  m: number[];
+
+  /** 筒子 */
+  p: number[];
+
+  /** 索子 */
+  s: number[];
+
+  /** 字牌 */
+  z: number[];
+};
+
 /** 手牌 */
 export class Hand {
   /**
@@ -134,22 +152,7 @@ export class Hand {
   _fulos: string[];
 
   /** 副露していない牌の種類と枚数 */
-  _menzenPais: {
-    /** 伏せられた牌 (対局相手の手牌で使う) */
-    _: number;
-
-    /** 萬子 */
-    m: number[];
-
-    /** 筒子 */
-    p: number[];
-
-    /** 索子 */
-    s: number[];
-
-    /** 字牌 */
-    z: number[];
-  };
+  _menzenPais: MenzenPais;
 
   constructor(haipai: string[] = []) {
     this._isRiichi = false;
