@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack serve --config webpack.development.js",
+    "debug": "webpack serve --config webpack.development.js --no-open",
     "build": "webpack --config webpack.production.js",
     "test": "jest",
     "test:ci": "jest --ci"

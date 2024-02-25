@@ -7,6 +7,8 @@
     {
       "type": "chrome",
       "request": "launch",
+      "preLaunchTask": "npm: debug",
+      "postDebugTask": "Terminate All Tasks",
       "name": "React",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
