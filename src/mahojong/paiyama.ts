@@ -276,8 +276,9 @@ export class PaiYama {
 
   /** ツモを行う */
   public tsumo(): Pai {
-    if (this._isLocked) throw Error("Yama is locked.");
-    if (this.remainTsumoCount == 0) throw Error("Yama doesn't have any pais.");
+    if (this._isLocked) throw Error("Paiyama is locked.");
+    if (this.remainTsumoCount === 0)
+      throw Error("Paiyama doesn't have any pais.");
     if (this._shouldOpenNewDora)
       throw Error("Don't tsumo before open new dora.");
 
@@ -302,12 +303,12 @@ export class PaiYama {
 
   /** カンツモを行う */
   public kanTsumo(): Pai {
-    if (this._isLocked) throw Error("Yama is locked.");
-    if (this.remainTsumoCount == 0)
-      throw new Error("Yama doesn't have any pais.");
+    if (this._isLocked) throw Error("Paiyama is locked.");
+    if (this.remainTsumoCount === 0)
+      throw new Error("Paiyama doesn't have any pais.");
     if (this._shouldOpenNewDora)
       throw new Error("Don't kan-tsumo before open new dora.");
-    if (this._doraDisplayPais.length == 5)
+    if (this._doraDisplayPais.length === 5)
       throw new Error("Don't kan-tsumo after kan called 4 times.");
 
     const kanTsumoPai = this._pais.shift();
@@ -317,18 +318,23 @@ export class PaiYama {
   }
 
   /** 新ドラ表示牌をめくる */
-  public openNewDoraDisplayPai(): void {
-    if (this._isLocked) throw Error("Yama is locked.");
+  public openNewDoraDisplayPai(): PaiYama {
+    if (this._isLocked) throw Error("Paiyama is locked.");
     if (!this._shouldOpenNewDora)
       throw Error("Don't open new-dora-display-pai.");
 
     this._doraDisplayPais.push(this._pais[4]);
     this._backDoraDisplayPais.push(this._pais[9]);
+
+    this._shouldOpenNewDora = false;
+
+    return this;
   }
 
   /** 牌山をロックする */
-  public lock(): void {
+  public lock(): PaiYama {
     this._isLocked = true;
+    return this;
   }
 
   /** 残りツモ枚数 */
@@ -338,12 +344,20 @@ export class PaiYama {
 
   /** ドラ表示牌の配列 */
   public get doraDisplayPais(): Pai[] {
-    return this.doraDisplayPais;
+    return this._doraDisplayPais;
   }
 
-  /** 裏ドラ表示牌の配列 */
-  public get backDoraDisplayPais(): Pai[] {
-    return this._backDoraDisplayPais;
+  /**
+   * 裏ドラ表示牌の配列
+   * ロックしていなければnullを返す。
+   * 裏ドラ表示牌がない場合はnullを返す。
+   */
+  public get backDoraDisplayPais(): Pai[] | null {
+    if (!this._isLocked) return null;
+
+    return this._backDoraDisplayPais.length === 0
+      ? null
+      : this._backDoraDisplayPais.concat();
   }
 }
 
