@@ -311,6 +311,8 @@ export class PaiYama {
     if (this._doraDisplayPais.length === 5)
       throw new Error("Don't kan-tsumo after kan called 4 times.");
 
+    this._shouldOpenNewDora = true;
+
     const kanTsumoPai = this._pais.shift();
     if (kanTsumoPai === undefined) throw Error("kan-tsumo pai is undefined.");
 
