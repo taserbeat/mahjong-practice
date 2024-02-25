@@ -1,4 +1,5 @@
 import Pai from "./pai";
+import Hand from "./hand";
 
 /** 牌山 */
 export class PaiYama {
@@ -183,6 +184,94 @@ export class PaiYama {
     // ドラ表示牌、裏ドラ表示牌
     this._doraDisplayPais = [this._pais[4]];
     this._backDoraDisplayPais = [this._pais[9]];
+  }
+
+  /** ドラ表示牌を指定してドラを返す */
+  static getDora(pai: Pai): Pai {
+    if (!Hand.validatePai(pai)) throw new Error(`${pai} is invalid.`);
+
+    const s = pai[0] as "m" | "p" | "s" | "z";
+    const n = +pai[1] || 5;
+
+    switch (pai) {
+      case "m1":
+        return "m2";
+      case "m2":
+        return "m3";
+      case "m3":
+        return "m4";
+      case "m4":
+        return "m5";
+      case "m5":
+        return "m6";
+      case "m0":
+        return "m6";
+      case "m6":
+        return "m7";
+      case "m7":
+        return "m8";
+      case "m8":
+        return "m9";
+      case "m9":
+        return "m1";
+
+      case "p1":
+        return "p2";
+      case "p2":
+        return "p3";
+      case "p3":
+        return "p4";
+      case "p4":
+        return "p5";
+      case "p5":
+        return "p6";
+      case "p0":
+        return "p6";
+      case "p6":
+        return "p7";
+      case "p7":
+        return "p8";
+      case "p8":
+        return "p9";
+      case "p9":
+        return "p1";
+
+      case "s1":
+        return "s2";
+      case "s2":
+        return "s3";
+      case "s3":
+        return "s4";
+      case "s4":
+        return "s5";
+      case "s5":
+        return "s6";
+      case "s0":
+        return "s6";
+      case "s6":
+        return "s7";
+      case "s7":
+        return "s8";
+      case "s8":
+        return "s9";
+      case "s9":
+        return "s1";
+
+      case "z1":
+        return "z2";
+      case "z2":
+        return "z3";
+      case "z3":
+        return "z4";
+      case "z4":
+        return "z1";
+      case "z5":
+        return "z6";
+      case "z6":
+        return "z7";
+      case "z7":
+        return "z5";
+    }
   }
 
   /** ツモを行う */
