@@ -1,6 +1,7 @@
 import Hand from "../hand";
 import * as Hora from "../hora";
 import { RonPai } from "../pai";
+import { ruleForTest } from "../rule";
 
 // import data from "./data/hora.json";
 
@@ -2588,4 +2589,309 @@ describe("hule メソッド", () => {
   });
 });
 
-describe("", () => {});
+describe("ルール変更", () => {
+  it("連風牌は2符のルールで、連風牌が2符となる", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m123p123z1z1,s1-23,z555="),
+      null,
+      Hora.createSituationParam({
+        jikaze: 0,
+        rule: { ...ruleForTest, 連風牌は2符: true },
+      })
+    );
+
+    expect(hule?.hu).toBe(30);
+  });
+
+  it("クイタン無しのルールで、クイタンは役にならない", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m22555p234s78,p777-"),
+      "s6=",
+      Hora.createSituationParam({
+        rule: { ...ruleForTest, クイタンあり: false },
+      })
+    );
+
+    expect(hule?.horaYakuInfos).toBeUndefined();
+  });
+
+  it("クイタン無しのルールで、門前であればタンヤオの役になる", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m22555p234777s78"),
+      "s6=",
+      Hora.createSituationParam({
+        rule: { ...ruleForTest, クイタンあり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [{ name: "断幺九", numHan: 1 }],
+      hu: 40,
+      numHan: 1,
+      numCompositeYakuman: undefined,
+      horaPoint: 1300,
+      incomes: [0, 1300, 0, -1300],
+    });
+  });
+
+  it("ダブル役満なしのルールで、国士無双十三面がダブル役満にならない", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m19p19s19z1234567"),
+      "m1+",
+      Hora.createSituationParam({
+        rule: { ...ruleForTest, ダブル役満あり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [{ name: "国士無双十三面", numHan: "*" }],
+      hu: undefined,
+      numHan: undefined,
+      numCompositeYakuman: 1,
+      horaPoint: 32000,
+      incomes: [0, 32000, -32000, 0],
+    });
+  });
+
+  it("ダブル役満なしのルールで、四暗刻単騎がダブル役満にならない", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m111p333s777z111m3"),
+      "m3=",
+      Hora.createSituationParam({
+        rule: { ...ruleForTest, ダブル役満あり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [{ name: "四暗刻単騎", numHan: "*" }],
+      hu: undefined,
+      numHan: undefined,
+      numCompositeYakuman: 1,
+      horaPoint: 32000,
+      incomes: [0, 32000, 0, -32000],
+    });
+  });
+
+  it("ダブル役満なしのルールで、大四喜がダブル役満にならない", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m22z22244,z333+,z111-"),
+      "z4=",
+      Hora.createSituationParam({
+        rule: { ...ruleForTest, ダブル役満あり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [{ name: "大四喜", numHan: "*" }],
+      hu: undefined,
+      numHan: undefined,
+      numCompositeYakuman: 1,
+      horaPoint: 32000,
+      incomes: [0, 32000, 0, -32000],
+    });
+  });
+
+  it("ダブル役満なしのルールで、純正九蓮宝燈がダブル役満にならない", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m1112345678999"),
+      "m2=",
+      Hora.createSituationParam({
+        rule: { ...ruleForTest, ダブル役満あり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [{ name: "純正九蓮宝燈", numHan: "*" }],
+      hu: undefined,
+      numHan: undefined,
+      numCompositeYakuman: 1,
+      horaPoint: 32000,
+      incomes: [0, 32000, 0, -32000],
+    });
+  });
+
+  it("役満の複合なしのルールで、ダブル役満 + 役満複合 + パオ (ツモ和了) が正しく点数計算される", () => {
+    const hule = Hora.hora(
+      Hand.fromString("z77,z111-,z2222,z333=3,z444+"),
+      null,
+      Hora.createSituationParam({
+        numRiichiBou: 1,
+        numTsumibou: 1,
+        rule: { ...ruleForTest, 役満の複合あり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [
+        { name: "大四喜", numHan: "**", paoTarget: "+" },
+        { name: "字一色", numHan: "*" },
+      ],
+      hu: undefined,
+      numHan: undefined,
+      numCompositeYakuman: 1,
+      horaPoint: 32000,
+      incomes: [0, 33300, -32300, 0],
+    });
+  });
+
+  it("役満の複合なしのルールで、ダブル役満 + 役満複合 + パオ (ロン和了) が正しく点数計算される", () => {
+    const hule = Hora.hora(
+      Hand.fromString("z7,z111-,z2222,z333=3,z444+"),
+      "z7-",
+      Hora.createSituationParam({
+        numRiichiBou: 1,
+        numTsumibou: 1,
+        rule: { ...ruleForTest, 役満の複合あり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [
+        { name: "大四喜", numHan: "**", paoTarget: "+" },
+        { name: "字一色", numHan: "*" },
+      ],
+      hu: undefined,
+      numHan: undefined,
+      numCompositeYakuman: 1,
+      horaPoint: 32000,
+      incomes: [-16300, 33300, -16000, 0],
+    });
+  });
+
+  it("役満パオなしのルールで、大三元が正しく点数計算される", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m2234,z555-5,z6666,z777+"),
+      "m5=",
+      Hora.createSituationParam({
+        rule: { ...ruleForTest, 役満パオあり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [{ name: "大三元", numHan: "*" }],
+      hu: undefined,
+      numHan: undefined,
+      numCompositeYakuman: 1,
+      horaPoint: 32000,
+      incomes: [0, 32000, 0, -32000],
+    });
+  });
+
+  it("役満パオなしのルールで、大四喜が正しく点数計算される", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m2,z222+,z4444,z333+,z111-"),
+      "m2=",
+      Hora.createSituationParam({
+        rule: { ...ruleForTest, 役満パオあり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [{ name: "大四喜", numHan: "**" }],
+      hu: undefined,
+      numHan: undefined,
+      numCompositeYakuman: 2,
+      horaPoint: 64000,
+      incomes: [0, 64000, 0, -64000],
+    });
+  });
+
+  it("数え役満なしのルールで、13翻が3倍満となる", () => {
+    const hule = Hora.hora(
+      Hand.fromString("p22334455667788*"),
+      null,
+      Hora.createSituationParam({
+        riichi: 1,
+        rule: { ...ruleForTest, 数え役満あり: false },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [
+        { name: "立直", numHan: 1 },
+        { name: "門前清自摸和", numHan: 1 },
+        { name: "平和", numHan: 1 },
+        { name: "断幺九", numHan: 1 },
+        { name: "二盃口", numHan: 3 },
+        { name: "清一色", numHan: 6 },
+      ],
+      hu: 20,
+      numHan: 13,
+      numCompositeYakuman: undefined,
+      horaPoint: 24000,
+      incomes: [-12000, 24000, -6000, -6000],
+    });
+  });
+
+  it("切り上げ満貫ありのルールで、30符 3翻 親 ツモ → 2000∀ (切り上げなし)", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m22z111p445566s789"),
+      null,
+      Hora.createSituationParam({
+        bakaze: 1,
+        jikaze: 0,
+        rule: { ...ruleForTest, 切り上げ満貫あり: true },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [
+        { name: "門前清自摸和", numHan: 1 },
+        { name: "自風 東", numHan: 1 },
+        { name: "一盃口", numHan: 1 },
+      ],
+      hu: 30,
+      numHan: 3,
+      numCompositeYakuman: undefined,
+      horaPoint: 6000,
+      incomes: [6000, -2000, -2000, -2000],
+    });
+  });
+
+  it("切り上げ満貫ありのルールで、30符 4翻 子 ツモ → 2000/4000", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m11z111p123789s789"),
+      null,
+      Hora.createSituationParam({
+        rule: { ...ruleForTest, 切り上げ満貫あり: true },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [
+        { name: "門前清自摸和", numHan: 1 },
+        { name: "場風 東", numHan: 1 },
+        { name: "混全帯幺九", numHan: 2 },
+      ],
+      hu: 30,
+      numHan: 4,
+      numCompositeYakuman: undefined,
+      horaPoint: 8000,
+      incomes: [-4000, 8000, -2000, -2000],
+    });
+  });
+
+  it("切り上げ満貫ありのルールで、60符 3翻 親 ツモ → 4000∀", () => {
+    const hule = Hora.hora(
+      Hand.fromString("m11222789,z2222,m444="),
+      null,
+      Hora.createSituationParam({
+        bakaze: 1,
+        jikaze: 0,
+        rule: { ...ruleForTest, 切り上げ満貫あり: true },
+      })
+    );
+
+    expect(hule).toStrictEqual({
+      horaYakuInfos: [
+        { name: "場風 南", numHan: 1 },
+        { name: "混一色", numHan: 2 },
+      ],
+      hu: 60,
+      numHan: 3,
+      numCompositeYakuman: undefined,
+      horaPoint: 12000,
+      incomes: [12000, -4000, -4000, -4000],
+    });
+  });
+});
