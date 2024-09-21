@@ -1,4 +1,4 @@
-import Hand from "./hand";
+import Hand, { MenzenPais } from "./hand";
 import { getHoraType, hora, HoraAmountInfo, SituationParam } from "./hora";
 import { Kawa } from "./kawa";
 import Pai, { Mentsu, RonPai } from "./pai";
@@ -8,8 +8,18 @@ import * as Shanten from "./shanten";
 
 /** 1人麻雀練習機の設定値 */
 export type PracticeSettings = {
+  /** ルール */
   rule: Rule;
+
+  /** 場風 (0: 東、1: 南、2: 西、3: 北) */
+  bakaze: Kaze;
+
+  /** 自風 (0: 東、1: 南、2: 西、3: 北) */
+  jikaze: Kaze;
 };
+
+/** 風 (0: 東、1: 南、2: 西、3: 北) */
+export type Kaze = 0 | 1 | 2 | 3;
 
 /** 実行可能アクション */
 export type LegalAction =
@@ -65,8 +75,8 @@ export class PracticeGame {
     this._isFirstTsumo = true;
     this._numKan = 0;
     this._situationParam = {
-      bakaze: 0,
-      jikaze: 0,
+      bakaze: settings.bakaze,
+      jikaze: settings.jikaze,
       baopai: [],
       fubaopai: null,
       rule: this._settings.rule,
@@ -301,6 +311,13 @@ export class PracticeGame {
 
     // 打牌した状態にする
     this._status = "Dapai";
+  }
+
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // getter
+
+  public get menzenPais(): MenzenPais {
+    return this._hand._menzenPais;
   }
 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

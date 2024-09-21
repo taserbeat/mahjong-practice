@@ -1,22 +1,14 @@
-import { useState } from "react";
-import { PracticeSettings } from "../../mahojong/practice";
-import { defaultRule } from "../../mahojong/rule";
 import { useAppDispatch } from "../../app/hooks";
 import { setMode } from "../../features/mode/modeSlice";
+import BaKazeSelector from "../settings/BakazeSelector";
+import JiKazeSelector from "../settings/JikazeSelector";
 
 /** 設定画面のコンポーネントのProps */
 interface SettingPageProps {}
 
-/** デフォルトの設定 */
-const defaultSetting: PracticeSettings = {
-  rule: defaultRule,
-};
-
 /** 設定画面のコンポーネント */
 const SettingPage = (props: SettingPageProps) => {
   const dispatch = useAppDispatch();
-
-  const [setting, setSetting] = useState(defaultSetting);
 
   const onStartClick = () => {
     dispatch(setMode("Practice"));
@@ -25,6 +17,16 @@ const SettingPage = (props: SettingPageProps) => {
   return (
     <div>
       <h2>設定画面</h2>
+
+      {/* 場風 */}
+      <div>
+        <BaKazeSelector />
+      </div>
+
+      {/* 自風 */}
+      <div>
+        <JiKazeSelector />
+      </div>
 
       <button onClick={onStartClick}>開始</button>
     </div>
