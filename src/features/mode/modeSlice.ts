@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-type ModeName = "Setting" | "Practice" | "Result";
+export type ModeName = "Setting" | "Practice" | "Result";
 
 export interface ModeState {
   /** モード名 */
