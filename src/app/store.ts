@@ -4,6 +4,7 @@ import counterReducer from "../features/counter/counterSlice";
 import modeReducer from "../features/mode/modeSlice";
 import settingsReducer from "../features/settings/settingsSlice";
 import gameReducer from "../features/game/gameSlice";
+import horaReducer from "../features/hora/horaSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     mode: modeReducer,
     settings: settingsReducer,
     // game: gameReducer,
+    hora: horaReducer,
   },
 });
 

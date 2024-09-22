@@ -23,11 +23,11 @@ export type Kaze = 0 | 1 | 2 | 3;
 
 /** 実行可能アクション */
 export type LegalAction =
-  | { action: "Hora" }
-  | { action: "Kan"; mentsuList: Mentsu[] }
-  | { action: "Dapai"; pais: string[] }
-  | { action: "Riichi"; pais: string[] }
-  | { action: "Kyuusyu" };
+  | { name: "Hora" }
+  | { name: "Kan"; mentsuList: Mentsu[] }
+  | { name: "Dapai"; pais: string[] }
+  | { name: "Riichi"; pais: string[] }
+  | { name: "Kyusyu" };
 
 /** ステータス (主に実行可能アクションの算出の内部判定処理で使用) */
 type PracticeStatus = "Haipai" | "Tsumo" | "Hora" | "Kan" | "Dapai";
@@ -64,6 +64,9 @@ export class PracticeGame {
   /** 場況情報 */
   private _situationParam: SituationParam;
 
+  /** 九種九牌が宣言されたか？ */
+  private _isKyusyuCalled: boolean;
+
   constructor(settings: PracticeSettings) {
     this._settings = settings;
 
@@ -93,6 +96,7 @@ export class PracticeGame {
         numTsumibou: 0,
       },
     };
+    this._isKyusyuCalled = false;
   }
 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -108,6 +112,7 @@ export class PracticeGame {
 
     // フラグをリセット
     this._isFirstTsumo = true;
+    this._isKyusyuCalled = false;
 
     // カンの回数をリセット
     this._numKan = 0;
@@ -163,30 +168,30 @@ export class PracticeGame {
 
     // 和了
     if (this.canHora(null)) {
-      legalActions.push({ action: "Hora" });
+      legalActions.push({ name: "Hora" });
     }
 
     // カン
     const kanCandidateMentsuList = this.getKanCandidateMentsuList();
     if (kanCandidateMentsuList.length > 0) {
-      legalActions.push({ action: "Kan", mentsuList: kanCandidateMentsuList });
+      legalActions.push({ name: "Kan", mentsuList: kanCandidateMentsuList });
     }
 
     // 打牌
     const dapaiCandidates = this.getDapaiCandidates();
     if (dapaiCandidates.length > 0) {
-      legalActions.push({ action: "Dapai", pais: dapaiCandidates });
+      legalActions.push({ name: "Dapai", pais: dapaiCandidates });
     }
 
     // 立直
     const riichiCandidateDapais = this.getRiichiCandidateDapais();
     if (riichiCandidateDapais.length > 0) {
-      legalActions.push({ action: "Riichi", pais: riichiCandidateDapais });
+      legalActions.push({ name: "Riichi", pais: riichiCandidateDapais });
     }
 
     // 九種九牌
     if (this.canKyuusyu()) {
-      legalActions.push({ action: "Kyuusyu" });
+      legalActions.push({ name: "Kyusyu" });
     }
 
     return legalActions;
@@ -311,13 +316,54 @@ export class PracticeGame {
 
     // 打牌した状態にする
     this._status = "Dapai";
+
+    // 流局していなければ、ツモを行う
+    if (!this.isDrawnGame) {
+      this.tsumo();
+    }
+  }
+
+  /** 九種九牌を宣言する */
+  public callKyusyu(): void {
+    this._isKyusyuCalled = true;
+    this._paiYama.lock();
   }
 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   // getter
 
+  /** 手牌 (門前) */
   public get menzenPais(): MenzenPais {
     return this._hand._menzenPais;
+  }
+
+  /** ツモ牌 */
+  public get tsumoPai(): string | null {
+    return this._hand._tsumoPai;
+  }
+
+  /** 河 */
+  public get kawa(): Kawa {
+    return this._kawa;
+  }
+
+  /** 流局か判定する */
+  public get isDrawnGame(): boolean {
+    // 九種九牌が宣言されていれば流局となる
+    if (this._isKyusyuCalled) return true;
+
+    // TODO: ツモ回数は見直す必要あり
+    // 残りツモが無くなっていれば流局となる
+    if (this._paiYama.remainTsumoCount === 0) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /** 立直済みであるか取得する */
+  public get isRiichied(): boolean {
+    return this._hand._isRiichi;
   }
 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

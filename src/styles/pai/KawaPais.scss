@@ -1,0 +1,17 @@
+@charset "utf-8";
+@use "../common/params.scss" as params;
+@use "../common/mixins.scss" as mixins;
+
+//* * * * * * * * * * KawaPais * * * * * * * * * *
+
+.kawa {
+  &__row {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+
+  &__pai {
+    margin: 0;
+  }
+}

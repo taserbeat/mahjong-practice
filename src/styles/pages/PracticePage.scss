@@ -1,0 +1,57 @@
+@charset "utf-8";
+@use "../common/params.scss" as params;
+@use "../common/mixins.scss" as mixins;
+
+//* * * * * * * * * * PracticePage * * * * * * * * * *
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kawa-wrapper {
+  width: 500px;
+  height: 450px;
+  margin: 0rem 0rem 0rem 0rem;
+
+  background-color: lightgreen;
+}
+
+.legal-actions {
+  display: flex;
+  width: 400px;
+  height: 40px;
+  justify-content: right;
+  align-items: center;
+
+  margin: 1rem 0;
+
+  background-color: pink;
+}
+
+.legal-action {
+  margin: 0 0 0 2rem;
+}
+
+.hand_menzen {
+  display: flex;
+  flex-direction: row;
+
+  &__already {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__tsumopai {
+    margin: 0rem 0rem 0rem 2rem;
+  }
+}
+
+.debug-buttons {
+  display: flex;
+}
+
+.debug-button {
+  margin: 0rem 2rem 0rem 0rem;
+}
