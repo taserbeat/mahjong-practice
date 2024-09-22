@@ -342,6 +342,11 @@ export class PracticeGame {
     return this._hand._tsumoPai;
   }
 
+  /** ドラ表示牌の配列 */
+  public get doraDisplayPais(): string[] {
+    return this._paiYama.doraDisplayPais;
+  }
+
   /** 河 */
   public get kawa(): Kawa {
     return this._kawa;

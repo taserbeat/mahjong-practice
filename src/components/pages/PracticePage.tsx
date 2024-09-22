@@ -16,6 +16,7 @@ import {
   setHoraResult,
 } from "../../features/hora/horaSlice";
 import KawaPais from "../pai/KawaPais";
+import DoraDisplayPais from "../pai/DoraDisplayPais";
 
 /** 練習ページのコンポーネントのProps */
 interface PracticePageProps {}
@@ -42,6 +43,9 @@ const PracticePage = (props: PracticePageProps) => {
 
   // 手牌
   const displayMenzenPais = shapeMenzenPais(game.menzenPais, tsumoPai);
+
+  // ドラ表示牌
+  const doraDisplayPais = game.doraDisplayPais;
 
   // 河
   const kawa = game.kawa;
@@ -108,6 +112,11 @@ const PracticePage = (props: PracticePageProps) => {
       <h2>練習ページ</h2>
 
       <div className="game">
+        {/* ドラ表示牌 */}
+        <div className="dora-displays-wrapper">
+          <DoraDisplayPais doraDisplayPais={doraDisplayPais} />
+        </div>
+
         {/* 河 */}
         <div className="kawa-wrapper">
           <KawaPais pais={kawa.pai} />

@@ -1,0 +1,13 @@
+@charset "utf-8";
+@use "../common/params.scss" as params;
+@use "../common/mixins.scss" as mixins;
+
+//* * * * * * * * * * DoraDisplayPais * * * * * * * * * *
+
+.dora-displays {
+  display: flex;
+
+  &__pai {
+    display: flex;
+  }
+}

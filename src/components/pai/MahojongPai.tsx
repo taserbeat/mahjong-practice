@@ -1,5 +1,3 @@
-import React from "react";
-
 import m0 from "../../assets/img/pai/m0.png";
 import m1 from "../../assets/img/pai/m1.png";
 import m2 from "../../assets/img/pai/m2.png";
