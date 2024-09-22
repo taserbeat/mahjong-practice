@@ -31,3 +31,7 @@ flowchart TD
     SelectRetry -- "同じ設定でもう一度" --> Init
     SelectRetry -- "設定を変更" --> Setting
 ```
+
+# 牌画像
+
+- [麻雀豆腐](https://majandofu.com/mahjong-images)
