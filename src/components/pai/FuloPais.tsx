@@ -12,38 +12,39 @@ interface FuloPaisProps {
 const FuloPais = (props: FuloPaisProps) => {
   const fulos = props.fulos;
 
-  // NOTE:
-  // 1人麻雀では副露は暗カンしかありえないので、暗カンを前提とした実装としている。
-  const fuloKantsuPais = fulos.map((fulo) => {
-    const kantsuPai = fulo.substring(0, 2);
-    return kantsuPai;
-  });
-
   return (
     <div className="fulo-mentsu-list">
-      {fuloKantsuPais.map((fuloKantsuPai, i) => (
-        <div className="fulo-mentsu" key={`${fuloKantsuPai}_${i}`}>
-          {/* 1牌目 */}
-          <div className="fulo-mentsu__pai">
-            <MahojongPai pai={fuloKantsuPai} />
-          </div>
+      {fulos.map((fuloMentsu, i) => {
+        // NOTE:
+        // 1人麻雀では副露は暗カンしかありえないので、暗カンを前提とした実装としている。
+        const pai1 = fuloMentsu.substring(0, 2);
+        const pai4 =
+          fuloMentsu.length >= 5 ? fuloMentsu[0] + fuloMentsu[4] : pai1;
 
-          {/* 2牌目 */}
-          <div className="fulo-mentsu__pai">
-            <MahojongPai pai="back" />
-          </div>
+        return (
+          <div className="fulo-mentsu" key={`${fuloMentsu}_${i}`}>
+            {/* 1牌目 */}
+            <div className="fulo-mentsu__pai">
+              <MahojongPai pai={pai1} />
+            </div>
 
-          {/* 3牌目 */}
-          <div className="fulo-mentsu__pai">
-            <MahojongPai pai="back" />
-          </div>
+            {/* 2牌目 */}
+            <div className="fulo-mentsu__pai">
+              <MahojongPai pai="back" />
+            </div>
 
-          {/* 4牌目 */}
-          <div className="fulo-mentsu__pai">
-            <MahojongPai pai={fuloKantsuPai} />
+            {/* 3牌目 */}
+            <div className="fulo-mentsu__pai">
+              <MahojongPai pai="back" />
+            </div>
+
+            {/* 4牌目 */}
+            <div className="fulo-mentsu__pai">
+              <MahojongPai pai={pai4} />
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

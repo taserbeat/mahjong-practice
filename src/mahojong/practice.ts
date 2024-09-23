@@ -137,8 +137,8 @@ export class PracticeGame {
 
     // 場況情報をリセット
     this._situationParam = {
-      bakaze: 0,
-      jikaze: 0,
+      bakaze: this._settings.bakaze,
+      jikaze: this._settings.jikaze,
       baopai: [],
       fubaopai: null,
       rule: this._settings.rule,
@@ -323,6 +323,9 @@ export class PracticeGame {
       }
     }
 
+    // 第一ツモではなくなる
+    this._isFirstTsumo = false;
+
     // 打牌した状態にする
     this._status = "Dapai";
 
@@ -340,6 +343,11 @@ export class PracticeGame {
 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   // getter
+
+  /** 牌姿文字列 */
+  public get paishi(): string {
+    return this._hand.toPaishi();
+  }
 
   /** 手牌 (門前) */
   public get menzenPais(): MenzenPais {
@@ -359,6 +367,11 @@ export class PracticeGame {
   /** ドラ表示牌の配列 */
   public get doraDisplayPais(): string[] {
     return this._paiYama.doraDisplayPais;
+  }
+
+  /** 裏ドラ表示牌の配列 */
+  public get backDoraDisplayPais(): string[] | null {
+    return this._paiYama.backDoraDisplayPais;
   }
 
   /** 河 */
@@ -388,6 +401,14 @@ export class PracticeGame {
   /** 立直済みであるか取得する */
   public get isRiichied(): boolean {
     return this._hand._isRiichi;
+  }
+
+  /** テンパイ状態を取得する */
+  public get isTenpai(): boolean {
+    // シャンテンが0であればテンパイ
+    const numShanten = Shanten.calcNumShanten(this._hand.clone());
+
+    return numShanten === 0;
   }
 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

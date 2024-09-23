@@ -1,0 +1,34 @@
+@charset "utf-8";
+@use "../common/params.scss" as params;
+@use "../common/mixins.scss" as mixins;
+
+//* * * * * * * * * * ResultPage * * * * * * * * * *
+
+.wrapper {
+  text-align: center;
+}
+
+.result-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 0 0 0;
+}
+
+.result-container {
+  display: flex;
+
+  width: 1000px;
+  height: 600px;
+
+  background-color: lightblue;
+}
+
+.btn-group {
+  display: flex;
+  margin: 2rem 0 0 0;
+}
+
+.btn-container {
+  margin: 0 1rem;
+}

@@ -10,15 +10,18 @@ import { defaultRule } from "../../mahojong/rule";
 import useRender from "../../hooks/useRender";
 import MahojongPai from "../pai/MahojongPai";
 import { MenzenPais } from "../../mahojong/hand";
-
-import "../../styles/pages/PracticePage.scss";
 import {
-  initializeHoraResult,
+  setNoTenpaiResult,
   setHoraResult,
+  setKyusyuResult,
+  setTenpaiResult,
 } from "../../features/hora/horaSlice";
 import KawaPais from "../pai/KawaPais";
 import DoraDisplayPais from "../pai/DoraDisplayPais";
 import FuloPais from "../pai/FuloPais";
+import { HoraAmountInfo } from "../../mahojong/hora";
+
+import "../../styles/pages/PracticePage.scss";
 
 /** 練習ページのコンポーネントのProps */
 interface PracticePageProps {}
@@ -39,7 +42,7 @@ const PracticePage = (props: PracticePageProps) => {
   const [isRiichiSelectMode, setIsRiichiSelectMode] = useState(false);
   const [isKanSelectMode, setisKanSelectMode] = useState(false);
 
-  const { updateRender } = useRender();
+  const { updateRender, lastRenderdAt } = useRender();
 
   // ツモ牌
   const tsumoPai = game.tsumoPai;
@@ -116,7 +119,58 @@ const PracticePage = (props: PracticePageProps) => {
 
   /** 流局する */
   const executeDraw = () => {
-    dispatch(initializeHoraResult());
+    // TODO:
+    const paishi = game.paishi;
+
+    if (game.isTenpai) {
+      dispatch(
+        setTenpaiResult({
+          paisi: paishi,
+          doraDisplayPais: doraDisplayPais,
+          backDoraDisplayPais: [],
+        })
+      );
+    } else {
+      dispatch(
+        setNoTenpaiResult({
+          paisi: paishi,
+          doraDisplayPais: doraDisplayPais,
+          backDoraDisplayPais: [],
+        })
+      );
+    }
+
+    dispatch(setMode("Result"));
+  };
+
+  /** 九種九牌する */
+  const executeKyusyu = () => {
+    dispatch(
+      setKyusyuResult({
+        paisi: game.paishi,
+        doraDisplayPais: doraDisplayPais,
+        backDoraDisplayPais: [],
+      })
+    );
+    dispatch(setMode("Result"));
+  };
+
+  /** 和了する */
+  const executeHora = (
+    hora: HoraAmountInfo,
+    paishi?: string,
+    backDoraDisplayPais?: string[]
+  ) => {
+    dispatch(
+      setHoraResult({
+        horaInfo: hora,
+        situationInfo: {
+          paisi: paishi ?? "",
+          doraDisplayPais: doraDisplayPais,
+          backDoraDisplayPais: backDoraDisplayPais ?? [],
+        },
+      })
+    );
     dispatch(setMode("Result"));
   };
 
@@ -126,12 +180,8 @@ const PracticePage = (props: PracticePageProps) => {
     updateRender();
   };
 
-  const onExitClick = () => {
-    dispatch(setMode("Result"));
-  };
-
   useEffect(() => {
-    dispatch(initializeHoraResult());
+    dispatch(setNoTenpaiResult());
     const newGame = new PracticeGame(settings);
     newGame.initialize();
     newGame.tsumo();
@@ -139,26 +189,41 @@ const PracticePage = (props: PracticePageProps) => {
   }, []);
 
   useEffect(() => {
+    let drawTimer: NodeJS.Timeout | undefined = undefined;
+    let autoTsumoCutTimer: NodeJS.Timeout | undefined = undefined;
+
     // 流局した場合
     if (isDrawnGame) {
-      const drawTimer = setTimeout(() => {
+      drawTimer = setTimeout(() => {
         executeDraw();
       }, 1500);
-      return () => clearTimeout(drawTimer);
+
+      return () => {
+        clearTimeout(drawTimer);
+        drawTimer = undefined;
+      };
     }
 
     // 立直済みで、ツモ切りしかできない場合
     if (shouldAutoTsumoCut) {
-      const tsumoCutTimer = setTimeout(() => {
+      autoTsumoCutTimer = setTimeout(() => {
         executeDapai(tsumoPai, { isTsumoCut: true });
-        updateRender();
       }, 1000);
 
-      return () => clearTimeout(tsumoCutTimer);
+      return () => {
+        clearTimeout(autoTsumoCutTimer);
+        autoTsumoCutTimer = undefined;
+      };
     }
 
-    return;
-  }, [isDrawnGame, shouldAutoTsumoCut, tsumoPai]);
+    return () => {
+      clearTimeout(drawTimer);
+      drawTimer = undefined;
+
+      clearTimeout(autoTsumoCutTimer);
+      autoTsumoCutTimer = undefined;
+    };
+  }, [isDrawnGame, shouldAutoTsumoCut, tsumoPai, lastRenderdAt]);
 
   return (
     <div>
@@ -233,8 +298,10 @@ const PracticePage = (props: PracticePageProps) => {
                     variant="contained"
                     onClick={() => {
                       const hora = game.hora();
-                      dispatch(setHoraResult(hora));
-                      dispatch(setMode("Result"));
+                      const paishi = game.paishi;
+                      const backDoraDisplayPais =
+                        game.backDoraDisplayPais ?? [];
+                      executeHora(hora, paishi, backDoraDisplayPais);
                     }}
                   >
                     ツモ
@@ -247,7 +314,7 @@ const PracticePage = (props: PracticePageProps) => {
                   <Button
                     variant="contained"
                     onClick={() => {
-                      dispatch(setMode("Result"));
+                      executeKyusyu();
                     }}
                   >
                     流局
@@ -336,12 +403,7 @@ const PracticePage = (props: PracticePageProps) => {
           {/* デバッグ用のボタン */}
           <div className="debug-buttons">
             <div className="debug-button">
-              <Button variant="contained" onClick={onExitClick}>
-                終了
-              </Button>
-            </div>
-
-            <div className="debug-button">
+              {/* ゲームを初期化するデバッグ向けボタン */}
               <Button
                 variant="contained"
                 onClick={() =>
@@ -355,6 +417,7 @@ const PracticePage = (props: PracticePageProps) => {
               </Button>
             </div>
 
+            {/* カン選択を表示するデバッグ向けボタン */}
             <div className="debug-button">
               <Button
                 variant="contained"
@@ -362,7 +425,40 @@ const PracticePage = (props: PracticePageProps) => {
                   setisKanSelectMode(true);
                 }}
               >
-                カン
+                カン選択
+              </Button>
+            </div>
+
+            {/* 和了するデバッグ向けボタン */}
+            <div className="debug-button">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  // 和了情報
+                  const hora: HoraAmountInfo = {
+                    horaPoint: 12000,
+                    hu: 20,
+                    incomes: [],
+                    horaYakuInfos: [
+                      { name: "立直", numHan: 1 },
+                      { name: "門前清自摸和", numHan: 1 },
+                      { name: "平和", numHan: 1 },
+                      { name: "断幺九", numHan: 1 },
+                      { name: "ドラ", numHan: 1 },
+                    ],
+                    numHan: 5,
+                  };
+
+                  // 牌姿
+                  const paishi = "m234678p345s2267s8";
+
+                  // 裏ドラ表示牌
+                  const backDoraDisplayPais: string[] = [];
+
+                  executeHora(hora, paishi, backDoraDisplayPais);
+                }}
+              >
+                和了
               </Button>
             </div>
           </div>
@@ -407,7 +503,9 @@ const PracticePage = (props: PracticePageProps) => {
           {/* 副露の選択エリア */}
           <div className="fulo-selector">
             {kanMentsuList.map((fuloMentsu, i) => {
-              const fuloKantsuPai = fuloMentsu.substring(0, 2);
+              const pai1 = fuloMentsu.substring(0, 2);
+              const pai4 =
+                fuloMentsu.length >= 5 ? fuloMentsu[0] + fuloMentsu[4] : pai1;
 
               return (
                 <div
@@ -417,7 +515,7 @@ const PracticePage = (props: PracticePageProps) => {
                 >
                   {/* 1牌目 */}
                   <div className="fulo-selection__pai">
-                    <MahojongPai pai={fuloKantsuPai} />
+                    <MahojongPai pai={pai1} />
                   </div>
 
                   {/* 2牌目 */}
@@ -432,7 +530,7 @@ const PracticePage = (props: PracticePageProps) => {
 
                   {/* 4牌目 */}
                   <div className="fulo-selection__pai">
-                    <MahojongPai pai={fuloKantsuPai} />
+                    <MahojongPai pai={pai4} />
                   </div>
                 </div>
               );
@@ -445,7 +543,7 @@ const PracticePage = (props: PracticePageProps) => {
 };
 
 /** 手牌を文字列配列に整形する */
-const shapeMenzenPais = (
+export const shapeMenzenPais = (
   menzenPais: MenzenPais,
   tsumoPai: string | null
 ): string[] => {
@@ -536,24 +634,6 @@ const shapeMenzenPais = (
   }
 
   return pais;
-};
-
-/** (デバッグ向け) */
-const debugMenzenPais = (game: PracticeGame) => {
-  return (
-    <div>
-      {Object.entries(game.menzenPais).map(([key, values]) => {
-        if (typeof values === "number") return [];
-
-        return (
-          <div key={key}>
-            <h2>{key}:</h2>
-            <ul>{values.join(", ")}</ul>
-          </div>
-        );
-      })}
-    </div>
-  );
 };
 
 export default PracticePage;

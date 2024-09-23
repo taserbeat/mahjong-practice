@@ -1,0 +1,99 @@
+@charset "utf-8";
+@use "../common/params.scss" as params;
+@use "../common/mixins.scss" as mixins;
+
+//* * * * * * * * * * HoraResultDisplay * * * * * * * * * *
+
+.hora-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+
+  font-size: 24px;
+}
+
+// 上段コンテナ
+.result_upper-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  .result_dora-displays {
+    display: flex;
+
+    &__wrapper {
+      margin: 1rem 3rem;
+    }
+  }
+}
+
+// 中段コンテナ
+.result_center-container {
+  display: flex;
+  height: 324px;
+
+  background-color: lightgreen;
+  width: 100%;
+}
+
+// 役一覧
+.yaku-info-list {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem auto 2rem 8rem;
+
+  flex-wrap: wrap;
+}
+
+// 役情報
+.yaku-info {
+  display: flex;
+  margin: 0.5rem 2rem;
+}
+
+// 点数
+.points {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin: auto 0 0 0;
+}
+
+// 下段コンテナ
+.result_lower-container {
+  display: flex;
+  margin: auto 0 0 0;
+}
+
+// 手牌
+.result_hand {
+  display: flex;
+  // width: 1400px;
+
+  // 手牌 (ツモ牌以外)
+  &__already {
+    display: flex;
+    justify-content: center;
+  }
+
+  // 副露
+  &__fulos {
+    display: flex;
+    margin: 0 1rem;
+
+    .result_fulo-mentsu {
+      display: flex;
+      margin: 0 0.5rem;
+
+      &__pai {
+        margin: 0 0 0 0;
+      }
+    }
+  }
+
+  // ツモ牌
+  &__tsumopai {
+    margin: 0rem 0rem 0rem 2rem;
+  }
+}
