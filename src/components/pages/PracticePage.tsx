@@ -112,172 +112,176 @@ const PracticePage = (props: PracticePageProps) => {
       <h2>練習ページ</h2>
 
       <div className="game">
-        {/* ドラ表示牌 */}
-        <div className="dora-displays-wrapper">
-          <DoraDisplayPais doraDisplayPais={doraDisplayPais} />
+        <div className="info-container">
+          {/* ドラ表示牌 */}
+          <div className="dora-displays-wrapper">
+            <DoraDisplayPais doraDisplayPais={doraDisplayPais} />
+          </div>
         </div>
 
-        {/* 河 */}
-        <div className="kawa-wrapper">
-          <KawaPais pais={kawa.pai} />
-        </div>
+        <div className="game-container">
+          {/* 河 */}
+          <div className="kawa-wrapper">
+            <KawaPais pais={kawa.pai} />
+          </div>
 
-        {/* 実行可能アクション */}
-        {isRiichiSelectMode ? (
-          // 立直モードで打牌を選択中
-          <div className="legal-actions">
-            <div className="legal-action">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setIsRiichiSelectMode(false);
-                }}
-              >
-                キャンセル
-              </Button>
+          {/* 実行可能アクション */}
+          {isRiichiSelectMode ? (
+            // 立直モードで打牌を選択中
+            <div className="legal-actions">
+              <div className="legal-action">
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setIsRiichiSelectMode(false);
+                  }}
+                >
+                  キャンセル
+                </Button>
+              </div>
             </div>
-          </div>
-        ) : (
-          // 通常の打牌を選択中
-          <div className="legal-actions">
-            {riichiAction?.name === "Riichi" && (
-              <div className="legal-action">
-                <Button
-                  variant="contained"
+          ) : (
+            // 通常の打牌を選択中
+            <div className="legal-actions">
+              {riichiAction?.name === "Riichi" && (
+                <div className="legal-action">
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      setIsRiichiSelectMode(true);
+                    }}
+                  >
+                    立直
+                  </Button>
+                </div>
+              )}
+
+              {kanAction && (
+                <div className="legal-action">
+                  <Button variant="contained">カン</Button>
+                </div>
+              )}
+
+              {horaAction && (
+                <div className="legal-action">
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      const hora = game.hora();
+                      dispatch(setHoraResult(hora));
+                      dispatch(setMode("Result"));
+                    }}
+                  >
+                    ツモ
+                  </Button>
+                </div>
+              )}
+
+              {kyusyuAction && (
+                <div className="legal-action">
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      dispatch(setMode("Result"));
+                    }}
+                  >
+                    流局
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 手牌 */}
+          <div className="hand_menzen">
+            <div className="hand_menzen__already">
+              {displayMenzenPais.map((pai, i) => (
+                <div
+                  key={`${pai}_${i}`}
                   onClick={() => {
-                    setIsRiichiSelectMode(true);
+                    if (isRiichied) {
+                      return;
+                    }
+
+                    if (isRiichiSelectMode && !riichiDapais.includes(pai)) {
+                      return;
+                    }
+
+                    dapai(pai, {
+                      isTsumoCut: false,
+                      isRiichi: isRiichiSelectMode,
+                    });
                   }}
                 >
-                  立直
-                </Button>
-              </div>
-            )}
+                  <MahojongPai
+                    pai={pai}
+                    isShadow={isRiichiSelectMode && !riichiDapais.includes(pai)}
+                  />
+                </div>
+              ))}
+            </div>
 
-            {kanAction && (
-              <div className="legal-action">
-                <Button variant="contained">カン</Button>
-              </div>
-            )}
-
-            {horaAction && (
-              <div className="legal-action">
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    const hora = game.hora();
-                    dispatch(setHoraResult(hora));
-                    dispatch(setMode("Result"));
-                  }}
-                >
-                  ツモ
-                </Button>
-              </div>
-            )}
-
-            {kyusyuAction && (
-              <div className="legal-action">
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    dispatch(setMode("Result"));
-                  }}
-                >
-                  流局
-                </Button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* 手牌 */}
-        <div className="hand_menzen">
-          <div className="hand_menzen__already">
-            {displayMenzenPais.map((pai, i) => (
+            {tsumoPai && (
               <div
-                key={`${pai}_${i}`}
+                className="hand_menzen__tsumopai"
                 onClick={() => {
-                  if (isRiichied) {
+                  if (
+                    isRiichiSelectMode &&
+                    !riichiDapais.includes(tsumoPai + "_")
+                  ) {
                     return;
                   }
-
-                  if (isRiichiSelectMode && !riichiDapais.includes(pai)) {
-                    return;
-                  }
-
-                  dapai(pai, {
-                    isTsumoCut: false,
+                  dapai(tsumoPai, {
+                    isTsumoCut: true,
                     isRiichi: isRiichiSelectMode,
                   });
                 }}
               >
                 <MahojongPai
-                  pai={pai}
-                  isShadow={isRiichiSelectMode && !riichiDapais.includes(pai)}
+                  pai={tsumoPai}
+                  isShadow={
+                    isRiichiSelectMode && !riichiDapais.includes(tsumoPai + "_")
+                  }
                 />
               </div>
-            ))}
+            )}
           </div>
 
-          {tsumoPai && (
-            <div
-              className="hand_menzen__tsumopai"
-              onClick={() => {
-                if (
-                  isRiichiSelectMode &&
-                  !riichiDapais.includes(tsumoPai + "_")
-                ) {
-                  return;
-                }
-                dapai(tsumoPai, {
-                  isTsumoCut: true,
-                  isRiichi: isRiichiSelectMode,
-                });
-              }}
-            >
-              <MahojongPai
-                pai={tsumoPai}
-                isShadow={
-                  isRiichiSelectMode && !riichiDapais.includes(tsumoPai + "_")
-                }
-              />
+          {/* デバッグ用のボタン */}
+
+          <div className="debug-buttons">
+            <div className="debug-button">
+              <Button variant="contained" onClick={onExitClick}>
+                終了
+              </Button>
             </div>
-          )}
-        </div>
 
-        {/* デバッグ用のボタン */}
+            <div className="debug-button">
+              <Button
+                variant="contained"
+                onClick={() =>
+                  executeWithRender(() => {
+                    game.initialize();
+                    game.tsumo();
+                  })
+                }
+              >
+                初期化
+              </Button>
+            </div>
 
-        <div className="debug-buttons">
-          <div className="debug-button">
-            <Button variant="contained" onClick={onExitClick}>
-              終了
-            </Button>
-          </div>
-
-          <div className="debug-button">
-            <Button
-              variant="contained"
-              onClick={() =>
-                executeWithRender(() => {
-                  game.initialize();
-                  game.tsumo();
-                })
-              }
-            >
-              初期化
-            </Button>
-          </div>
-
-          <div className="debug-button">
-            <Button
-              variant="contained"
-              onClick={() => {
-                executeWithRender(() => {
-                  game.tsumo();
-                });
-              }}
-            >
-              ツモ
-            </Button>
+            <div className="debug-button">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  executeWithRender(() => {
+                    game.tsumo();
+                  });
+                }}
+              >
+                ツモ
+              </Button>
+            </div>
           </div>
         </div>
       </div>
