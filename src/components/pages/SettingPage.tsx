@@ -1,4 +1,6 @@
 import { useAppDispatch } from "../../app/hooks";
+import Button from "@mui/material/Button";
+
 import { setMode } from "../../features/mode/modeSlice";
 import BaKazeSelector from "../settings/BakazeSelector";
 import JiKazeSelector from "../settings/JikazeSelector";
@@ -28,7 +30,9 @@ const SettingPage = (props: SettingPageProps) => {
         <JiKazeSelector />
       </div>
 
-      <button onClick={onStartClick}>開始</button>
+      <Button variant="contained" onClick={onStartClick}>
+        開始
+      </Button>
     </div>
   );
 };

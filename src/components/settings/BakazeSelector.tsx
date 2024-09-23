@@ -48,32 +48,6 @@ const BaKazeSelector = (props: BaKazeSelectorProps) => {
             }
             label="南"
           />
-
-          {/* 西 */}
-          <FormControlLabel
-            control={
-              <Radio
-                checked={bakaze === 2}
-                onChange={() => {
-                  dispatch(setBakaze(2));
-                }}
-              />
-            }
-            label="西"
-          />
-
-          {/* 北 */}
-          <FormControlLabel
-            control={
-              <Radio
-                checked={bakaze === 3}
-                onChange={() => {
-                  dispatch(setBakaze(3));
-                }}
-              />
-            }
-            label="北"
-          />
         </RadioGroup>
       </FormControl>
     </div>
