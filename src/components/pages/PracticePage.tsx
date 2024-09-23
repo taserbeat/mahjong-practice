@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setMode } from "../../features/mode/modeSlice";
@@ -73,13 +72,16 @@ const PracticePage = (props: PracticePageProps) => {
 
   const kyusyuAction = legalActions.find((action) => action.name === "Kyusyu");
 
-  useEffect(() => {
-    dispatch(initializeHoraResult());
-    const newGame = new PracticeGame(settings);
-    newGame.initialize();
-    newGame.tsumo();
-    setGame(newGame);
-  }, []);
+  // 流局であるか？
+  const isDrawnGame = game.isDrawnGame;
+
+  // 自動的にツモ切りを行うべきか？
+  const shouldAutoTsumoCut =
+    !isDrawnGame &&
+    isRiichied &&
+    legalActions.length === 1 &&
+    legalActions[0].name === "Dapai" &&
+    tsumoPai !== null;
 
   /** 打牌する */
   const executeDapai = (
@@ -112,6 +114,12 @@ const PracticePage = (props: PracticePageProps) => {
     updateRender();
   };
 
+  /** 流局する */
+  const executeDraw = () => {
+    dispatch(initializeHoraResult());
+    dispatch(setMode("Result"));
+  };
+
   // 指定された関数を実行し、レンダリングも行う
   const executeWithRender = (func: () => void) => {
     func();
@@ -122,10 +130,38 @@ const PracticePage = (props: PracticePageProps) => {
     dispatch(setMode("Result"));
   };
 
+  useEffect(() => {
+    dispatch(initializeHoraResult());
+    const newGame = new PracticeGame(settings);
+    newGame.initialize();
+    newGame.tsumo();
+    setGame(newGame);
+  }, []);
+
+  useEffect(() => {
+    // 流局した場合
+    if (isDrawnGame) {
+      const drawTimer = setTimeout(() => {
+        executeDraw();
+      }, 1500);
+      return () => clearTimeout(drawTimer);
+    }
+
+    // 立直済みで、ツモ切りしかできない場合
+    if (shouldAutoTsumoCut) {
+      const tsumoCutTimer = setTimeout(() => {
+        executeDapai(tsumoPai, { isTsumoCut: true });
+        updateRender();
+      }, 1000);
+
+      return () => clearTimeout(tsumoCutTimer);
+    }
+
+    return;
+  }, [isDrawnGame, shouldAutoTsumoCut, tsumoPai]);
+
   return (
     <div>
-      {/* <h2>練習ページ</h2> */}
-
       <div className="game">
         {/* 左コンテナ */}
         <div className="left-container">
@@ -221,8 +257,6 @@ const PracticePage = (props: PracticePageProps) => {
             </div>
           )}
 
-          <div>{kanMentsuList.join(", ")}</div>
-
           {/* 手牌 */}
           <div className="hand_menzen">
             <div className="hand_menzen__already">
@@ -230,14 +264,22 @@ const PracticePage = (props: PracticePageProps) => {
                 <div
                   key={`${pai}_${i}`}
                   onClick={() => {
+                    // 流局の場合は打牌できない
+                    if (isDrawnGame) {
+                      return;
+                    }
+
+                    // 立直済みの場合は門前の手牌を打牌できない
                     if (isRiichied) {
                       return;
                     }
 
+                    // 立直をかけるのに、テンパイが崩れる牌は打牌できない
                     if (isRiichiSelectMode && !riichiDapais.includes(pai)) {
                       return;
                     }
 
+                    // 打牌する
                     executeDapai(pai, {
                       isTsumoCut: false,
                       isRiichi: isRiichiSelectMode,
@@ -256,12 +298,25 @@ const PracticePage = (props: PracticePageProps) => {
               <div
                 className="hand_menzen__tsumopai"
                 onClick={() => {
+                  // 流局の場合は打牌できない
+                  if (isDrawnGame) {
+                    return;
+                  }
+
+                  // 立直をかけるのに、テンパイが崩れる牌は打牌できない
                   if (
                     isRiichiSelectMode &&
                     !riichiDapais.includes(tsumoPai + "_")
                   ) {
                     return;
                   }
+
+                  // 自動ツモ切り中の場合は、ユーザーが打牌できないようにする
+                  // (自動ツモ切りの処理側で打牌する)
+                  if (shouldAutoTsumoCut) {
+                    return;
+                  }
+
                   executeDapai(tsumoPai, {
                     isTsumoCut: true,
                     isRiichi: isRiichiSelectMode,

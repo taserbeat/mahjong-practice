@@ -67,6 +67,12 @@ export class PracticeGame {
   /** 九種九牌が宣言されたか？ */
   private _isKyusyuCalled: boolean;
 
+  /** ツモを行なった回数 (嶺上ツモの回数は含めない) */
+  private _tsumoCount: number;
+
+  /** 打牌できる回数 (流局の判定で使用) */
+  private readonly _maxDapaiCount = 18;
+
   constructor(settings: PracticeSettings) {
     this._settings = settings;
 
@@ -97,6 +103,7 @@ export class PracticeGame {
       },
     };
     this._isKyusyuCalled = false;
+    this._tsumoCount = 0;
   }
 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -151,12 +158,16 @@ export class PracticeGame {
 
     // 捨て牌をリセット
     this._kawa = new Kawa();
+
+    // ツモ回数をリセット
+    this._tsumoCount = 0;
   }
 
   /** ツモ処理 */
   public tsumo(): void {
     const pai = this._paiYama.tsumo();
     this._hand.tsumo(pai);
+    this._tsumoCount += 1;
 
     // 通常の牌をツモった状態にする
     this._status = "Tsumo";
@@ -255,12 +266,10 @@ export class PracticeGame {
         // 嶺上開花
         isRinShan: this._status === "Kan",
 
-        // TODO: 海底の判定で牌山の残り枚数を見直す
         // 海底/河底
         // 海底の役が付くのは牌山の残りツモ回数が0回 且つ 嶺上開花では無いときである
         // また、1人麻雀なので、河底はありえない
-        haitei:
-          this._paiYama.remainTsumoCount > 0 || this._status === "Kan" ? 0 : 1,
+        haitei: this.remainTsumoCount > 0 || this._status === "Kan" ? 0 : 1,
 
         // 天和/地和
         // 第一ツモ和了でない場合は天和/地和ではない。
@@ -357,14 +366,19 @@ export class PracticeGame {
     return this._kawa;
   }
 
+  /** 残りツモ回数 */
+  public get remainTsumoCount(): number {
+    const remainTsumoCount = this._maxDapaiCount - this._tsumoCount;
+    return remainTsumoCount >= 0 ? remainTsumoCount : 0;
+  }
+
   /** 流局か判定する */
   public get isDrawnGame(): boolean {
     // 九種九牌が宣言されていれば流局となる
     if (this._isKyusyuCalled) return true;
 
-    // TODO: ツモ回数は見直す必要あり
-    // 残りツモが無くなっていれば流局となる
-    if (this._paiYama.remainTsumoCount === 0) {
+    // 打牌した回数が上限に達すると、流局となる
+    if (this._kawa.pai.length >= this._maxDapaiCount) {
       return true;
     }
 
@@ -451,8 +465,7 @@ export class PracticeGame {
   /** カン可能な面子を取得する */
   private getKanCandidateMentsuList(): Mentsu[] {
     // 残りツモ0回 または 5回目はカンできない
-    // TODO: 残りツモ回数の値は見直す必要あり
-    if (this._paiYama.remainTsumoCount === 0 || this._numKan >= 4) {
+    if (this.remainTsumoCount === 0 || this._numKan >= 4) {
       return [];
     }
 
@@ -557,8 +570,7 @@ export class PracticeGame {
       // 嶺上開花の場合は和了可能
       this._status === "Kan" ||
       // 海底摸月の場合は和了可能
-      // TODO: 1人麻雀なので牌山の残り枚数が0枚の時に海底摸月とならないので見直す
-      this._paiYama.remainTsumoCount === 0;
+      this.remainTsumoCount === 0;
 
     if (hasSituationYaku) {
       return true;
