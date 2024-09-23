@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setMode } from "../../features/mode/modeSlice";
@@ -17,6 +19,7 @@ import {
 } from "../../features/hora/horaSlice";
 import KawaPais from "../pai/KawaPais";
 import DoraDisplayPais from "../pai/DoraDisplayPais";
+import FuloPais from "../pai/FuloPais";
 
 /** 練習ページのコンポーネントのProps */
 interface PracticePageProps {}
@@ -35,6 +38,7 @@ const PracticePage = (props: PracticePageProps) => {
   const [game, setGame] = useState(dummyGame);
 
   const [isRiichiSelectMode, setIsRiichiSelectMode] = useState(false);
+  const [isKanSelectMode, setisKanSelectMode] = useState(false);
 
   const { updateRender } = useRender();
 
@@ -43,6 +47,9 @@ const PracticePage = (props: PracticePageProps) => {
 
   // 手牌
   const displayMenzenPais = shapeMenzenPais(game.menzenPais, tsumoPai);
+
+  // 副露面子
+  const fulos = game.fulos;
 
   // ドラ表示牌
   const doraDisplayPais = game.doraDisplayPais;
@@ -74,7 +81,8 @@ const PracticePage = (props: PracticePageProps) => {
     setGame(newGame);
   }, []);
 
-  const dapai = (
+  /** 打牌する */
+  const executeDapai = (
     pai: string,
     options?: {
       isTsumoCut?: boolean;
@@ -97,6 +105,13 @@ const PracticePage = (props: PracticePageProps) => {
     updateRender();
   };
 
+  /** カンする */
+  const executeKan = (mentsu: string) => {
+    game.kan(mentsu);
+    setisKanSelectMode(false);
+    updateRender();
+  };
+
   // 指定された関数を実行し、レンダリングも行う
   const executeWithRender = (func: () => void) => {
     func();
@@ -109,17 +124,19 @@ const PracticePage = (props: PracticePageProps) => {
 
   return (
     <div>
-      <h2>練習ページ</h2>
+      {/* <h2>練習ページ</h2> */}
 
       <div className="game">
-        <div className="info-container">
+        {/* 左コンテナ */}
+        <div className="left-container">
           {/* ドラ表示牌 */}
           <div className="dora-displays-wrapper">
             <DoraDisplayPais doraDisplayPais={doraDisplayPais} />
           </div>
         </div>
 
-        <div className="game-container">
+        {/* 中央コンテナ */}
+        <div className="center-container">
           {/* 河 */}
           <div className="kawa-wrapper">
             <KawaPais pais={kawa.pai} />
@@ -158,7 +175,19 @@ const PracticePage = (props: PracticePageProps) => {
 
               {kanAction && (
                 <div className="legal-action">
-                  <Button variant="contained">カン</Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      if (kanMentsuList.length > 1) {
+                        setisKanSelectMode(true);
+                        return;
+                      }
+
+                      executeKan(kanMentsuList[0]);
+                    }}
+                  >
+                    カン
+                  </Button>
                 </div>
               )}
 
@@ -192,6 +221,8 @@ const PracticePage = (props: PracticePageProps) => {
             </div>
           )}
 
+          <div>{kanMentsuList.join(", ")}</div>
+
           {/* 手牌 */}
           <div className="hand_menzen">
             <div className="hand_menzen__already">
@@ -207,7 +238,7 @@ const PracticePage = (props: PracticePageProps) => {
                       return;
                     }
 
-                    dapai(pai, {
+                    executeDapai(pai, {
                       isTsumoCut: false,
                       isRiichi: isRiichiSelectMode,
                     });
@@ -231,7 +262,7 @@ const PracticePage = (props: PracticePageProps) => {
                   ) {
                     return;
                   }
-                  dapai(tsumoPai, {
+                  executeDapai(tsumoPai, {
                     isTsumoCut: true,
                     isRiichi: isRiichiSelectMode,
                   });
@@ -248,7 +279,6 @@ const PracticePage = (props: PracticePageProps) => {
           </div>
 
           {/* デバッグ用のボタン */}
-
           <div className="debug-buttons">
             <div className="debug-button">
               <Button variant="contained" onClick={onExitClick}>
@@ -274,17 +304,87 @@ const PracticePage = (props: PracticePageProps) => {
               <Button
                 variant="contained"
                 onClick={() => {
-                  executeWithRender(() => {
-                    game.tsumo();
-                  });
+                  setisKanSelectMode(true);
                 }}
               >
-                ツモ
+                カン
               </Button>
             </div>
           </div>
         </div>
+
+        {/* 右コンテナ */}
+        <div className="right-container">
+          <div className="fulo-wrapper">
+            <FuloPais fulos={fulos} />
+          </div>
+        </div>
       </div>
+
+      {/* 副露選択のモーダル */}
+      <Modal
+        open={isKanSelectMode}
+        onClose={() => {
+          setisKanSelectMode(false);
+        }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div className="fulo-selector-wrapper">
+          {/* 副露のキャンセルボタン */}
+          <div className="fulo-cancel-btn-wrapper">
+            <Button
+              variant="contained"
+              onClick={() => {
+                setisKanSelectMode(false);
+              }}
+              style={{
+                margin: "1rem 1rem",
+              }}
+            >
+              キャンセル
+            </Button>
+          </div>
+
+          {/* 副露の選択エリア */}
+          <div className="fulo-selector">
+            {kanMentsuList.map((fuloMentsu, i) => {
+              const fuloKantsuPai = fuloMentsu.substring(0, 2);
+
+              return (
+                <div
+                  className="fulo-selection"
+                  key={`${fuloMentsu}_${i}`}
+                  onClick={() => executeKan(fuloMentsu)}
+                >
+                  {/* 1牌目 */}
+                  <div className="fulo-selection__pai">
+                    <MahojongPai pai={fuloKantsuPai} />
+                  </div>
+
+                  {/* 2牌目 */}
+                  <div className="fulo-selection__pai">
+                    <MahojongPai pai="back" />
+                  </div>
+
+                  {/* 3牌目 */}
+                  <div className="fulo-selection__pai">
+                    <MahojongPai pai="back" />
+                  </div>
+
+                  {/* 4牌目 */}
+                  <div className="fulo-selection__pai">
+                    <MahojongPai pai={fuloKantsuPai} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

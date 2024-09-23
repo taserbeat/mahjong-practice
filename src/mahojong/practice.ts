@@ -337,6 +337,11 @@ export class PracticeGame {
     return this._hand._menzenPais;
   }
 
+  /** 副露面子 */
+  public get fulos(): string[] {
+    return this._hand._fulos;
+  }
+
   /** ツモ牌 */
   public get tsumoPai(): string | null {
     return this._hand._tsumoPai;
