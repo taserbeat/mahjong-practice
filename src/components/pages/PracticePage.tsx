@@ -18,8 +18,8 @@ import {
 } from "../../features/hora/horaSlice";
 import KawaPais from "../pai/KawaPais";
 import DoraDisplayPais from "../pai/DoraDisplayPais";
-import FuloPais from "../pai/FuloPais";
 import { HoraAmountInfo } from "../../mahojong/hora";
+import FuloMentsu from "../pai/FuloMentsu";
 
 import "../../styles/pages/PracticePage.scss";
 
@@ -467,7 +467,11 @@ const PracticePage = (props: PracticePageProps) => {
         {/* 右コンテナ */}
         <div className="right-container">
           <div className="fulo-wrapper">
-            <FuloPais fulos={fulos} />
+            {fulos.map((fuloMentsu, i) => (
+              <div className="fulo-box" key={`fulo-box_${i}`}>
+                <FuloMentsu fuloMentsu={fuloMentsu} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -503,35 +507,14 @@ const PracticePage = (props: PracticePageProps) => {
           {/* 副露の選択エリア */}
           <div className="fulo-selector">
             {kanMentsuList.map((fuloMentsu, i) => {
-              const pai1 = fuloMentsu.substring(0, 2);
-              const pai4 =
-                fuloMentsu.length >= 5 ? fuloMentsu[0] + fuloMentsu[4] : pai1;
-
               return (
+                // 副露の選択肢
                 <div
                   className="fulo-selection"
-                  key={`${fuloMentsu}_${i}`}
+                  key={`fulo-selection_${i}`}
                   onClick={() => executeKan(fuloMentsu)}
                 >
-                  {/* 1牌目 */}
-                  <div className="fulo-selection__pai">
-                    <MahojongPai pai={pai1} />
-                  </div>
-
-                  {/* 2牌目 */}
-                  <div className="fulo-selection__pai">
-                    <MahojongPai pai="back" />
-                  </div>
-
-                  {/* 3牌目 */}
-                  <div className="fulo-selection__pai">
-                    <MahojongPai pai="back" />
-                  </div>
-
-                  {/* 4牌目 */}
-                  <div className="fulo-selection__pai">
-                    <MahojongPai pai={pai4} />
-                  </div>
+                  <FuloMentsu fuloMentsu={fuloMentsu} />
                 </div>
               );
             })}

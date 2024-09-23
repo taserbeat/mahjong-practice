@@ -69,7 +69,6 @@
 // 手牌
 .result_hand {
   display: flex;
-  // width: 1400px;
 
   // 手牌 (ツモ牌以外)
   &__already {
@@ -83,12 +82,8 @@
     margin: 0 1rem;
 
     .result_fulo-mentsu {
-      display: flex;
+      // display: flex;
       margin: 0 0.5rem;
-
-      &__pai {
-        margin: 0 0 0 0;
-      }
     }
   }
 

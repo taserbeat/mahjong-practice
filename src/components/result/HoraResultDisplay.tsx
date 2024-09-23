@@ -6,7 +6,7 @@ import { Rule } from "../../mahojong/rule";
 import Hand from "../../mahojong/hand";
 import { shapeMenzenPais } from "../pages/PracticePage";
 import MahojongPai from "../pai/MahojongPai";
-import FuloPais from "../pai/FuloPais";
+import FuloMentsu from "../pai/FuloMentsu";
 
 import "../../styles/result/HoraResultDisplay.scss";
 
@@ -108,31 +108,9 @@ const HoraResultDisplay = (props: HoraResultDisplayProps) => {
           {/* 副露 */}
           <div className="result_hand__fulos">
             {hand._fulos.map((fuloMentsu, i) => {
-              const pai1 = fuloMentsu.substring(0, 2);
-              const pai4 =
-                fuloMentsu.length >= 5 ? fuloMentsu[0] + fuloMentsu[4] : pai1;
-
               return (
                 <div className="result_fulo-mentsu" key={`fulo-mentsu-${i}`}>
-                  {/* 1牌目 */}
-                  <div className="result_fulo-mentsu__pai">
-                    <MahojongPai pai={pai1} />
-                  </div>
-
-                  {/* 2牌目 */}
-                  <div className="result_fulo-mentsu__pai">
-                    <MahojongPai pai="back" />
-                  </div>
-
-                  {/* 3牌目 */}
-                  <div className="result_fulo-mentsu__pai">
-                    <MahojongPai pai="back" />
-                  </div>
-
-                  {/* 4牌目 */}
-                  <div className="result_fulo-mentsu__pai">
-                    <MahojongPai pai={pai4} />
-                  </div>
+                  <FuloMentsu fuloMentsu={fuloMentsu} />
                 </div>
               );
             })}

@@ -2,8 +2,12 @@
 @use "../common/params.scss" as params;
 @use "../common/mixins.scss" as mixins;
 
-//* * * * * * * * * * DoraDisplayPais * * * * * * * * * *
+//* * * * * * * * * * FuloMentsu * * * * * * * * * *
 
-.dora-displays {
+.comp_fulo-mentsu {
   display: flex;
+
+  &__pai {
+    margin: 0 0 0 0;
+  }
 }

@@ -8,11 +8,13 @@
   display: flex;
 }
 
+// 左コンテナ
 .left-container {
   display: flex;
   width: 200px;
 }
 
+// 中央コンテナ
 .center-container {
   width: 1000px;
   display: flex;
@@ -74,6 +76,7 @@
   margin: 0rem 2rem 0rem 0rem;
 }
 
+// 右コンテナ
 .right-container {
   display: flex;
   margin-left: auto;
@@ -82,11 +85,15 @@
 .fulo-wrapper {
   width: 280px;
   margin: 15rem 0 0 0;
-  height: auto;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
   background-color: lightblue;
+}
+
+.fulo-box {
+  margin: 0.1rem 0;
 }
 
 .fulo-selector-wrapper {
@@ -98,18 +105,14 @@
   justify-content: flex-end;
 }
 
+// 副露の選択エリア
 .fulo-selector {
   height: 250px;
   display: flex;
   align-items: center;
 }
 
+// 副露の選択肢
 .fulo-selection {
-  display: flex;
-
   margin: 0 1rem 0 1rem;
-
-  &__pai {
-    display: flex;
-  }
 }
