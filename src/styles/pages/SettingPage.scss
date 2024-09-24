@@ -1,0 +1,74 @@
+@charset "utf-8";
+@use "../common/params.scss" as params;
+@use "../common/mixins.scss" as mixins;
+
+//* * * * * * * * * * SettingPage * * * * * * * * * *
+
+.setting-wrappr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+// 設定コンテナ
+.setting-container {
+  display: flex;
+  width: 100%;
+}
+
+// 配牌設定のコンテナ
+.haipai-setting-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+
+  // 牌山
+  &__paiyama {
+    display: flex;
+    flex-direction: column;
+
+    background-color: lightgreen;
+
+    // 萬子
+    &__manzu {
+      display: flex;
+    }
+
+    // 筒子
+    &__pinzu {
+      display: flex;
+    }
+
+    // 索子
+    &__sozu {
+      display: flex;
+    }
+
+    // 字牌
+    &__jipai {
+      display: flex;
+    }
+
+    // 赤
+    &__reds {
+      display: flex;
+    }
+  }
+
+  // 配牌
+  &__haipai {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 900px;
+    height: 100px;
+    margin: 1rem 0;
+
+    background-color: pink;
+  }
+}
+
+.btn-start {
+  margin: 3rem 0;
+}

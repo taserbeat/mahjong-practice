@@ -20,13 +20,16 @@ import KawaPais from "../pai/KawaPais";
 import DoraDisplayPais from "../pai/DoraDisplayPais";
 import { HoraAmountInfo } from "../../mahojong/hora";
 import FuloMentsu from "../pai/FuloMentsu";
+import {
+  selectHaipaiSetting,
+  selectPaiyamaSetting,
+} from "../../features/haipai/haipaiSlice";
 
 import "../../styles/pages/PracticePage.scss";
-
 /** 練習ページのコンポーネントのProps */
 interface PracticePageProps {}
 
-let dummyGame = new PracticeGame({
+const dummyGame = new PracticeGame({
   rule: defaultRule,
   bakaze: 0,
   jikaze: 0,
@@ -37,6 +40,9 @@ const PracticePage = (props: PracticePageProps) => {
   const dispatch = useAppDispatch();
 
   const settings = useAppSelector(selectSettings);
+  const haipaiSettings = useAppSelector(selectHaipaiSetting);
+  const paiyamaSettings = useAppSelector(selectPaiyamaSetting);
+
   const [game, setGame] = useState(dummyGame);
 
   const [isRiichiSelectMode, setIsRiichiSelectMode] = useState(false);
@@ -119,7 +125,6 @@ const PracticePage = (props: PracticePageProps) => {
 
   /** 流局する */
   const executeDraw = () => {
-    // TODO:
     const paishi = game.paishi;
 
     if (game.isTenpai) {
@@ -180,14 +185,19 @@ const PracticePage = (props: PracticePageProps) => {
     updateRender();
   };
 
+  // マウント時のフック
   useEffect(() => {
     dispatch(setNoTenpaiResult());
-    const newGame = new PracticeGame(settings);
+    const newGame = new PracticeGame(settings, {
+      haipai: haipaiSettings,
+      paiyama: paiyamaSettings,
+    });
     newGame.initialize();
     newGame.tsumo();
     setGame(newGame);
   }, []);
 
+  // 自動的にアクションを実行するフック
   useEffect(() => {
     let drawTimer: NodeJS.Timeout | undefined = undefined;
     let autoTsumoCutTimer: NodeJS.Timeout | undefined = undefined;

@@ -1,8 +1,8 @@
+import CustomPaiYama from "./custom/customPaiyama";
 import Hand, { MenzenPais } from "./hand";
 import { getHoraType, hora, HoraAmountInfo, SituationParam } from "./hora";
 import { Kawa } from "./kawa";
 import Pai, { Mentsu, RonPai } from "./pai";
-import PaiYama from "./paiyama";
 import { Rule } from "./rule";
 import * as Shanten from "./shanten";
 
@@ -17,6 +17,17 @@ export type PracticeSettings = {
   /** 自風 (0: 東、1: 南、2: 西、3: 北) */
   jikaze: Kaze;
 };
+
+/** 配牌設定 */
+type HaipaiSettings =
+  | {
+      haipai: undefined;
+      paiyama: undefined;
+    }
+  | {
+      haipai: Pai[];
+      paiyama: Pai[];
+    };
 
 /** 風 (0: 東、1: 南、2: 西、3: 北) */
 export type Kaze = 0 | 1 | 2 | 3;
@@ -40,8 +51,14 @@ export class PracticeGame {
   /** 設定値 */
   private _settings: PracticeSettings;
 
+  /** 牌姿 (初期化用) */
+  private _initHaipai: Pai[] | undefined;
+
+  /** 牌山 (初期化用) */
+  private _initPaiyama: Pai[] | undefined;
+
   /** 牌山 */
-  private _paiYama: PaiYama;
+  private _paiYama: CustomPaiYama;
 
   /** 河 */
   private _kawa: Kawa;
@@ -73,12 +90,23 @@ export class PracticeGame {
   /** 打牌できる回数 (流局の判定で使用) */
   private readonly _maxDapaiCount = 18;
 
-  constructor(settings: PracticeSettings) {
+  constructor(
+    settings: PracticeSettings,
+    haipaiSettings: HaipaiSettings = {
+      haipai: undefined,
+      paiyama: undefined,
+    }
+  ) {
     this._settings = settings;
+    this._initHaipai = haipaiSettings.haipai;
+    this._initPaiyama = haipaiSettings.paiyama;
 
-    this._paiYama = new PaiYama();
+    this._hand =
+      this._initHaipai === undefined || this._initHaipai.length === 0
+        ? new Hand()
+        : new Hand(this._initHaipai);
+    this._paiYama = new CustomPaiYama(this._initPaiyama);
     this._kawa = new Kawa();
-    this._hand = new Hand();
     this._point = 25000;
     this._status = "Haipai";
     this._isFirstTsumo = true;
@@ -125,13 +153,22 @@ export class PracticeGame {
     this._numKan = 0;
 
     // 牌山をリセット
-    this._paiYama = new PaiYama();
+    this._paiYama = new CustomPaiYama(this._initPaiyama);
 
-    // 牌山から13枚をツモリ、配牌とする
     const haipai: string[] = [];
-    for (let i = 0; i < 13; i++) {
-      const pai = this._paiYama.tsumo();
-      haipai.push(pai);
+    if (this._initHaipai === undefined) {
+      // 牌山から13枚をツモリ、配牌とする
+      for (let i = 0; i < 13; i++) {
+        const pai = this._paiYama.tsumo();
+        haipai.push(pai);
+      }
+    } else {
+      // 指定の配牌から始める (13枚になるまでツモる)
+      for (let i = 0; i < 13; i++) {
+        const pai = this._initHaipai[i] ?? this._paiYama.tsumo();
+        console.log(`pai: ${pai}`);
+        haipai.push(pai);
+      }
     }
     this._hand = new Hand(haipai);
 
