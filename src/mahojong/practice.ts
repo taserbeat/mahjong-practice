@@ -408,7 +408,11 @@ export class PracticeGame {
 
   /** 裏ドラ表示牌の配列 */
   public get backDoraDisplayPais(): string[] | null {
-    return this._paiYama.backDoraDisplayPais;
+    if (this._hand.isRiichi) {
+      return this._paiYama.backDoraDisplayPais;
+    }
+
+    return [];
   }
 
   /** 河 */
