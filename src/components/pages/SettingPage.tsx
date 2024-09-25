@@ -1,11 +1,12 @@
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Button from "@mui/material/Button";
 
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setMode } from "../../features/mode/modeSlice";
 import BaKazeSelector from "../settings/BakazeSelector";
 import JiKazeSelector from "../settings/JikazeSelector";
 import {
   addHaipai,
+  initializeHaipai,
   removeHaipai,
   selectHaipaiSetting,
   selectPaiyamaSetting,
@@ -87,6 +88,10 @@ const SettingPage = (props: SettingPageProps) => {
   /** 配牌の牌がクリックされた時の処理 */
   const onHaipaiClick = (pai: Pai) => {
     dispatch(removeHaipai(pai));
+  };
+
+  const onResetClick = () => {
+    dispatch(initializeHaipai());
   };
 
   return (
@@ -202,10 +207,18 @@ const SettingPage = (props: SettingPageProps) => {
         </div>
       </div>
 
-      <div className="btn-start">
-        <Button variant="contained" onClick={onStartClick}>
-          開始
-        </Button>
+      <div className="button-container">
+        <div className="button-container__button">
+          <Button variant="contained" onClick={onStartClick}>
+            開始
+          </Button>
+        </div>
+
+        <div className="button-container__button">
+          <Button variant="contained" onClick={onResetClick}>
+            リセット
+          </Button>
+        </div>
       </div>
     </div>
   );
