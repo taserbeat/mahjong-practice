@@ -1,18 +1,14 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 
-import counterReducer from "../features/counter/counterSlice";
 import modeReducer from "../features/mode/modeSlice";
 import settingsReducer from "../features/settings/settingsSlice";
-import gameReducer from "../features/game/gameSlice";
 import horaReducer from "../features/hora/horaSlice";
 import haipaiReducer from "../features/haipai/haipaiSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     mode: modeReducer,
     settings: settingsReducer,
-    // game: gameReducer,
     hora: horaReducer,
     haipaiSetting: haipaiReducer,
   },

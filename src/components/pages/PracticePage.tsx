@@ -26,6 +26,7 @@ import {
 } from "../../features/haipai/haipaiSlice";
 
 import "../../styles/pages/PracticePage.scss";
+
 /** 練習ページのコンポーネントのProps */
 interface PracticePageProps {}
 
