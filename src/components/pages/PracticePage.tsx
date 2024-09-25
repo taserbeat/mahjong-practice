@@ -413,10 +413,10 @@ const PracticePage = (props: PracticePageProps) => {
             )}
           </div>
 
-          {/* デバッグ用のボタン */}
-          <div className="debug-buttons">
-            <div className="debug-button">
-              {/* ゲームを初期化するデバッグ向けボタン */}
+          {/* 操作ボタン */}
+          <div className="controll-buttons">
+            {/* 最初からやり直す */}
+            <div className="controll-button">
               <Button
                 variant="contained"
                 onClick={() =>
@@ -426,12 +426,22 @@ const PracticePage = (props: PracticePageProps) => {
                   })
                 }
               >
-                初期化
+                最初から
               </Button>
             </div>
 
-            {/* カン選択を表示するデバッグ向けボタン */}
-            <div className="debug-button">
+            {/* 設定画面へ */}
+            <div className="controll-button">
+              <Button
+                variant="contained"
+                onClick={() => dispatch(setMode("Setting"))}
+              >
+                設定へ
+              </Button>
+            </div>
+
+            {/* カン選択を表示する(デバッグ向け) */}
+            {/* <div className="controll-button">
               <Button
                 variant="contained"
                 onClick={() => {
@@ -440,10 +450,10 @@ const PracticePage = (props: PracticePageProps) => {
               >
                 カン選択
               </Button>
-            </div>
+            </div> */}
 
-            {/* 和了するデバッグ向けボタン */}
-            <div className="debug-button">
+            {/* 和了する(デバッグ向け) */}
+            {/* <div className="controll-button">
               <Button
                 variant="contained"
                 onClick={() => {
@@ -473,7 +483,7 @@ const PracticePage = (props: PracticePageProps) => {
               >
                 和了
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
 
