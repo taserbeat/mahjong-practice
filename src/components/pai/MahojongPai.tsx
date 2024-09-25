@@ -53,6 +53,9 @@ interface MahojongPaiProps {
 
   /** 横にするか？ */
   isLay?: boolean;
+
+  /** ホバー時に浮かせるか？ */
+  isFloatingOnHover?: boolean;
 }
 
 /** 麻雀牌画像 */
@@ -60,15 +63,24 @@ const MahojongPai = (props: MahojongPaiProps) => {
   const src = getImage(props.pai);
   const isShadow = props.isShadow === undefined ? false : props.isShadow;
   const isLay = props.isLay === undefined ? false : props.isLay;
+  const isFloatingOnHover =
+    props.isFloatingOnHover === undefined ? false : props.isFloatingOnHover;
 
   const classNames = ["pai"];
 
+  // 暗くするか？
   if (isShadow) {
     classNames.push("shadow");
   }
 
+  // 横にするか？
   if (isLay) {
     classNames.push("lay");
+  }
+
+  // ホバー時に浮かせるか？
+  if (isFloatingOnHover) {
+    classNames.push("floatable");
   }
 
   return <img className={classNames.join(" ")} src={src} alt={props.pai} />;

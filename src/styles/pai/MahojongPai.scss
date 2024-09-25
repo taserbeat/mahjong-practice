@@ -9,13 +9,20 @@
   display: flex;
 }
 
+/* 暗くする */
 .shadow {
   filter: brightness(70%);
 }
 
+/* 横にする */
 .lay {
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 
   padding: 0px 12px;
+}
+
+/* ホバー時に浮かせる */
+.floatable:hover {
+  transform: translateY(-1.5rem); // 上に移動
 }

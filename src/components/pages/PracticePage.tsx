@@ -367,6 +367,7 @@ const PracticePage = (props: PracticePageProps) => {
                   <MahojongPai
                     pai={pai}
                     isShadow={isRiichiSelectMode && !riichiDapais.includes(pai)}
+                    isFloatingOnHover
                   />
                 </div>
               ))}
@@ -406,6 +407,7 @@ const PracticePage = (props: PracticePageProps) => {
                   isShadow={
                     isRiichiSelectMode && !riichiDapais.includes(tsumoPai + "_")
                   }
+                  isFloatingOnHover
                 />
               </div>
             )}
