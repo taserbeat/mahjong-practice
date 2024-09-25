@@ -105,7 +105,7 @@ export class PracticeGame {
       this._initHaipai === undefined || this._initHaipai.length === 0
         ? new Hand()
         : new Hand(this._initHaipai);
-    this._paiYama = new CustomPaiYama(this._initPaiyama);
+    this._paiYama = new CustomPaiYama(this._initPaiyama, true);
     this._kawa = new Kawa();
     this._point = 25000;
     this._status = "Haipai";
@@ -153,7 +153,7 @@ export class PracticeGame {
     this._numKan = 0;
 
     // 牌山をリセット
-    this._paiYama = new CustomPaiYama(this._initPaiyama);
+    this._paiYama = new CustomPaiYama(this._initPaiyama, true);
 
     const haipai: string[] = [];
     if (this._initHaipai === undefined) {
