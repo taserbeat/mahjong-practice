@@ -15,29 +15,29 @@ const FuloMentsu = (props: FuloMentsuProps) => {
 
   const fuloMentsu = props.fuloMentsu;
 
-  const pai1 = fuloMentsu.substring(0, 2);
-  const pai4 = fuloMentsu.length >= 5 ? fuloMentsu[0] + fuloMentsu[4] : pai1;
+  const pai2 = fuloMentsu.substring(0, 2);
+  const pai3 = fuloMentsu.length >= 5 ? fuloMentsu[0] + fuloMentsu[4] : pai2;
 
   return (
     <div className="comp_fulo-mentsu">
       {/* 1牌目 */}
       <div className="comp_fulo-mentsu__pai">
-        <MahojongPai pai={pai1} />
+        <MahojongPai pai="back" />
       </div>
 
       {/* 2牌目 */}
       <div className="comp_fulo-mentsu__pai">
-        <MahojongPai pai="back" />
+        <MahojongPai pai={pai2} />
       </div>
 
       {/* 3牌目 */}
       <div className="comp_fulo-mentsu__pai">
-        <MahojongPai pai="back" />
+        <MahojongPai pai={pai3} />
       </div>
 
       {/* 4牌目 */}
       <div className="comp_fulo-mentsu__pai">
-        <MahojongPai pai={pai4} />
+        <MahojongPai pai="back" />
       </div>
     </div>
   );
