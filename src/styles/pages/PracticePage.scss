@@ -81,12 +81,70 @@
 // 右コンテナ
 .right-container {
   display: flex;
+  flex-direction: column;
   margin-left: auto;
+  width: 280px;
+}
+
+// アシスト機能
+.assist-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 350px;
+
+  background-color: lightcyan;
+
+  // 受け入れ情報のリスト
+  .accept-infos {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    white-space: nowrap;
+
+    // 受け入れ情報
+    .accept-info {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin: 0.5rem 0;
+
+      // 1行目 (打牌、有効牌の種類・枚数)
+      &__row1 {
+        display: flex;
+        align-items: center;
+
+        // 打牌
+        &__cut-pai {
+          width: 25px;
+          margin: 0 0 0 0.5rem;
+        }
+
+        // 有効牌の種類・枚数
+        &__count {
+          margin-left: 0.5rem;
+        }
+      }
+
+      // 2行目 (有効牌の画像)
+      &__row2 {
+        display: flex;
+        margin: 0.5rem 0.5rem;
+
+        &__accepted-pai {
+          width: 20px;
+        }
+      }
+    }
+  }
 }
 
 .fulo-wrapper {
   width: 280px;
-  margin: 15rem 0 0 0;
+  margin: 2rem 0 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import Switch from "@mui/material/Switch";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setMode } from "../../features/mode/modeSlice";
 import { PracticeGame } from "../../mahojong/practice";
-import { selectSettings } from "../../features/settings/settingsSlice";
+import {
+  selectIsAssistEnabled,
+  selectSettings,
+  setIsAssistEnabled,
+} from "../../features/settings/settingsSlice";
 import { defaultRule } from "../../mahojong/rule";
 import useRender from "../../hooks/useRender";
 import MahojongPai from "../pai/MahojongPai";
@@ -24,6 +32,7 @@ import {
   selectHaipaiSetting,
   selectPaiyamaSetting,
 } from "../../features/haipai/haipaiSlice";
+import useAccept from "../../hooks/useAccept";
 
 import "../../styles/pages/PracticePage.scss";
 
@@ -43,6 +52,8 @@ const PracticePage = (props: PracticePageProps) => {
   const settings = useAppSelector(selectSettings);
   const haipaiSettings = useAppSelector(selectHaipaiSetting);
   const paiyamaSettings = useAppSelector(selectPaiyamaSetting);
+
+  const isAssistEnabled = useAppSelector(selectIsAssistEnabled);
 
   const [game, setGame] = useState(dummyGame);
 
@@ -92,6 +103,13 @@ const PracticePage = (props: PracticePageProps) => {
     legalActions.length === 1 &&
     legalActions[0].name === "Dapai" &&
     tsumoPai !== null;
+
+  // 受け入れ情報
+  const acceptInfos = useAccept({
+    paishi: game.paishi,
+    doraDisplayPais: doraDisplayPais,
+    kawaPais: kawa.pai,
+  });
 
   /** 打牌する */
   const executeDapai = (
@@ -178,12 +196,6 @@ const PracticePage = (props: PracticePageProps) => {
       })
     );
     dispatch(setMode("Result"));
-  };
-
-  // 指定された関数を実行し、レンダリングも行う
-  const executeWithRender = (func: () => void) => {
-    func();
-    updateRender();
   };
 
   // マウント時のフック
@@ -419,12 +431,11 @@ const PracticePage = (props: PracticePageProps) => {
             <div className="controll-button">
               <Button
                 variant="contained"
-                onClick={() =>
-                  executeWithRender(() => {
-                    game.initialize();
-                    game.tsumo();
-                  })
-                }
+                onClick={() => {
+                  game.initialize();
+                  game.tsumo();
+                  updateRender();
+                }}
               >
                 最初から
               </Button>
@@ -489,6 +500,57 @@ const PracticePage = (props: PracticePageProps) => {
 
         {/* 右コンテナ */}
         <div className="right-container">
+          {/* アシスト機能 */}
+          <div className="assist-wrapper">
+            <div className="assist-switch">
+              <FormControl component="fieldset">
+                <FormGroup aria-label="position" row>
+                  <FormControlLabel
+                    control={<Switch color="primary" />}
+                    label="アシストモード"
+                    labelPlacement="end"
+                    checked={isAssistEnabled}
+                    onChange={() => {
+                      dispatch(setIsAssistEnabled(!isAssistEnabled));
+                    }}
+                  />
+                </FormGroup>
+              </FormControl>
+            </div>
+
+            {/* 受け入れ情報 */}
+            {isAssistEnabled && (
+              <ul className="accept-infos">
+                {acceptInfos.map((acceptInfo, i) => (
+                  <li className="accept-info" key={`accept-info_${i}`}>
+                    {/* 1行目 (打牌、有効牌の種類・枚数) */}
+                    <div className="accept-info__row1">
+                      {/* 打牌 */}
+                      <div className="accept-info__row1__cut-pai">
+                        <MahojongPai pai={acceptInfo.cutPai} />
+                      </div>
+
+                      {/* 有効牌の種類・枚数 */}
+                      <div className="accept-info__row1__count">{`${acceptInfo.acceptsKinds.length}種${acceptInfo.acceptsCount}枚`}</div>
+                    </div>
+
+                    {/* 2行目 (有効牌の画像) */}
+                    <div className="accept-info__row2">
+                      {acceptInfo.acceptsKinds.map((pai, i) => (
+                        <div
+                          className="accept-info__row2__accepted-pai"
+                          key={`accepted-pai_${i}`}
+                        >
+                          <MahojongPai pai={pai} />
+                        </div>
+                      ))}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
           <div className="fulo-wrapper">
             {fulos.map((fuloMentsu, i) => (
               <div className="fulo-box" key={`fulo-box_${i}`}>

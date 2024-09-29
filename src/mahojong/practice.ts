@@ -166,7 +166,6 @@ export class PracticeGame {
       // 指定の配牌から始める (13枚になるまでツモる)
       for (let i = 0; i < 13; i++) {
         const pai = this._initHaipai[i] ?? this._paiYama.tsumo();
-        console.log(`pai: ${pai}`);
         haipai.push(pai);
       }
     }
