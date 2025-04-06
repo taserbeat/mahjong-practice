@@ -1619,7 +1619,7 @@ describe("getKanCandidates メソッド", () => {
 
   it("リーチ後は大明槓できないこと", () => {
     expect(
-      Hand.fromString("m111p456s789z1234").getKanCandidates("m1+")
+      Hand.fromString("m111p456s789z1234*").getKanCandidates("m1+")
     ).toEqual(expect.arrayContaining([]));
   });
 
