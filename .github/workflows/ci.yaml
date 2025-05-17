@@ -1,0 +1,48 @@
+name: CI for testing before merging into main branch
+
+on:
+  push:
+    branches:
+      - "main"  # mainブランチにpushされたら実行
+
+  pull_request:
+    branches:
+      - "main"  # mainブランチのプルリクエストで実行
+
+jobs:
+  test:
+    name: test
+    strategy:
+      matrix:
+        os: [ubuntu-22.04]
+        node: [18.x]
+    runs-on: ${{ matrix.os }}
+    # https://zenn.dev/ryo_kawamata/articles/github-actions-specific-branch
+    if: contains(github.head_ref, 'feature/') || contains(github.head_ref, 'fix/') || contains(github.head_ref, 'hotfix/') || contains(github.head_ref, 'feature/release/v')
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-react-and-next
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "YARN_CACHE_DIR=$(yarn cache dir)" >> "${GITHUB_OUTPUT}"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache.outputs.YARN_CACHE_DIR }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ matrix.os }}-yarn-
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Run test
+        run: yarn test:ci
