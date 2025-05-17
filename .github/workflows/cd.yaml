@@ -1,0 +1,31 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Deploy
+        run: yarn deploy
+        env:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
