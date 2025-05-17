@@ -54,7 +54,7 @@ module.exports = merge(common, {
         test: /\.(png|jpe?g|gif|svg)$/i, // 画像ファイルに対するルール
         type: "asset/resource", // Asset Modulesのタイプ
         generator: {
-          filename: "static/images/[name].[ext]", // 出力先とファイル名
+          filename: "static/images/[name][ext]", // 出力先とファイル名
         },
       },
     ],
