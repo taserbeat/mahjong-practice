@@ -2,13 +2,15 @@
   "name": "mahjong-practice",
   "version": "0.0.1",
   "license": "MIT",
+  "homepage": "https://taserbeat.github.io/mahjong-practice",
   "scripts": {
     "start": "webpack serve --config webpack.development.js",
     "debug": "webpack serve --config webpack.development.js --no-open",
     "build": "webpack --config webpack.production.js",
     "test": "jest",
     "test:consolelog": "est --silent=false --verbose false",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --ci",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.0",
