@@ -1,8 +1,0 @@
-{
-  "recommendations": [
-    "editorconfig.editorconfig",
-    "esbenp.prettier-vscode",
-    "foxundermoon.shell-format",
-    "firsttris.vscode-jest-runner"
-  ]
-}
