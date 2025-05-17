@@ -8,6 +8,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = merge(common, {
   mode: "production",
   devtool: false,
+  output: {
+    publicPath: "/mahjong-practice/",
+  },
   module: {
     rules: [
       /** TypeScriptのモジュール */
