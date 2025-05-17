@@ -14,8 +14,8 @@ jobs:
     name: test
     strategy:
       matrix:
-        os: [ubuntu-22.04]
-        node: [18.x]
+        os: [ubuntu-24.04]
+        node: [22.x]
     runs-on: ${{ matrix.os }}
     # https://zenn.dev/ryo_kawamata/articles/github-actions-specific-branch
     if: contains(github.head_ref, 'feature/') || contains(github.head_ref, 'fix/') || contains(github.head_ref, 'hotfix/') || contains(github.head_ref, 'feature/release/v')
