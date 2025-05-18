@@ -12,11 +12,11 @@ interface DoraDisplayPais {
 /** ドラ表示牌 */
 const DoraDisplayPais = (props: DoraDisplayPais) => {
   const doraDisplayPais =
-    props.doraDisplayPais.length >= 4
+    props.doraDisplayPais.length >= 5
       ? props.doraDisplayPais
       : [
           ...props.doraDisplayPais,
-          ...new Array<string>(4 - props.doraDisplayPais.length).fill("back"),
+          ...new Array<string>(5 - props.doraDisplayPais.length).fill("back"),
         ];
 
   return (
