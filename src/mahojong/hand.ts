@@ -1,4 +1,4 @@
-import Pai, { Mentsu, Paishi } from "./pai";
+import type { Mentsu, Pai, Paishi } from "./pai";
 
 /** 副露していない手牌の種類と枚数の型 */
 export type MenzenPais = {
@@ -213,7 +213,7 @@ export class Hand {
   public toPaishi(): Paishi {
     // 伏せ牌を追加する (ツモ牌が伏せ牌の場合はあとで追加する)
     let paishi = "_".repeat(
-      this._menzenPais._ + (this._tsumoPai === "_" ? -1 : 0)
+      this._menzenPais._ + (this._tsumoPai === "_" ? -1 : 0),
     );
 
     // 萬子・筒子・索子・字牌の牌姿を作る
@@ -425,7 +425,7 @@ export class Hand {
       this._fulos[i] = mentsu;
       this.decrease(
         s,
-        Number(mentsu.substring(mentsu.length - 1, mentsu.length))
+        Number(mentsu.substring(mentsu.length - 1, mentsu.length)),
       );
     } else {
       throw new Error("The kan is unknown.");
@@ -576,7 +576,7 @@ export class Hand {
         if (n - 1 == 5 && menzenPais[0] > 0) mianChiCandidates.push(s + "406-");
         if ((n - 2 != 5 && n - 1 != 5) || menzenPais[0] < menzenPais[5])
           mianChiCandidates.push(
-            s + (n - 2) + (n - 1) + (pai[1] + directionOrNull)
+            s + (n - 2) + (n - 1) + (pai[1] + directionOrNull),
           );
       }
     }
@@ -587,7 +587,7 @@ export class Hand {
         if (n + 1 == 5 && menzenPais[0] > 0) mianChiCandidates.push(s + "34-0");
         if ((n - 1 != 5 && n + 1 != 5) || menzenPais[0] < menzenPais[5])
           mianChiCandidates.push(
-            s + (n - 1) + (pai[1] + directionOrNull) + (n + 1)
+            s + (n - 1) + (pai[1] + directionOrNull) + (n + 1),
           );
       }
     }
@@ -602,7 +602,7 @@ export class Hand {
         if (n + 2 == 5 && menzenPais[0] > 0) mianChiCandidates.push(s + "3-40");
         if ((n + 1 != 5 && n + 2 != 5) || menzenPais[0] < menzenPais[5])
           mianChiCandidates.push(
-            s + (pai[1] + directionOrNull) + (n + 1) + (n + 2)
+            s + (pai[1] + directionOrNull) + (n + 1) + (n + 2),
           );
       }
     }
@@ -657,7 +657,7 @@ export class Hand {
    * カンすると少牌あるいは多牌になる場合はnullを返す。
    */
   public getKanCandidates(
-    paiOrUndefined: Pai | string | undefined
+    paiOrUndefined: Pai | string | undefined,
   ): Mentsu[] | null {
     let kanCandidates: Mentsu[] = [];
 
@@ -720,7 +720,7 @@ export class Hand {
             // 赤牌を考慮して暗カンを加える
             if (n === 5) {
               kanCandidates.push(
-                s + "5".repeat(4 - menzenPais[0]) + "0".repeat(menzenPais[0])
+                s + "5".repeat(4 - menzenPais[0]) + "0".repeat(menzenPais[0]),
               );
             } else kanCandidates.push(s + n + n + n + n);
           }

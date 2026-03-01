@@ -7,11 +7,8 @@ import FormLabel from "@mui/material/FormLabel";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectBakaze, setBakaze } from "../../features/settings/settingsSlice";
 
-/** 場風の選択コンポーネントのProps */
-interface BaKazeSelectorProps {}
-
 /** 場風の選択コンポーネント */
-const BaKazeSelector = (props: BaKazeSelectorProps) => {
+const BaKazeSelector = () => {
   const dispatch = useAppDispatch();
   const bakaze = useAppSelector(selectBakaze);
 

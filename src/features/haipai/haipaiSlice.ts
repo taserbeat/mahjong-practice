@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import Pai from "../../mahojong/pai";
-import { RootState } from "../../app/store";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { Pai } from "../../mahojong/pai";
+import type { RootState } from "../../app/store";
 
 /** 配牌を指定するステート */
 type HaipaiState = {
@@ -169,7 +169,7 @@ export const haipaiSlice = createSlice({
   initialState: initialState,
   reducers: {
     /** 指定配牌を初期化する */
-    initializeHaipai: (state) => initialState,
+    initializeHaipai: () => initialState,
 
     /** 指定配牌に牌を追加する */
     addHaipai: (state, action: PayloadAction<Pai>) => {

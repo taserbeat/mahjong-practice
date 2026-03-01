@@ -1,5 +1,5 @@
-import Pai from "./pai";
 import Hand from "./hand";
+import type { Pai } from "./pai";
 
 /** 牌山 */
 export class PaiYama {
@@ -189,9 +189,6 @@ export class PaiYama {
   /** ドラ表示牌を指定してドラを返す */
   static getDora(pai: Pai): Pai {
     if (!Hand.validatePai(pai)) throw new Error(`${pai} is invalid.`);
-
-    const s = pai[0] as "m" | "p" | "s" | "z";
-    const n = +pai[1] || 5;
 
     switch (pai) {
       case "m1":

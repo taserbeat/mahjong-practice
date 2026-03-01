@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest";
 import Hand from "../hand";
 import * as Hora from "../hora";
-import { RonPai } from "../pai";
+import type { RonPai } from "../pai";
 import { ruleForTest } from "../rule";
 
 // import data from "./data/hora.json";
@@ -241,7 +242,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString(),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toBeUndefined();
@@ -251,7 +252,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m345567p234s33789"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(20);
@@ -261,7 +262,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m345567p234s3378"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(30);
@@ -271,7 +272,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m112233p456z33s78"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(30);
@@ -281,7 +282,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m112233p456z11s78"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -291,7 +292,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m112233p456z22s78"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -301,7 +302,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m112233p456z55s78"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -311,7 +312,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m112233z444z11s78"),
       "s9=",
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule?.hu).toBe(50);
@@ -321,7 +322,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m123z11m88,p888+,s888-"),
       "m8=",
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule?.hu).toBe(30);
@@ -331,7 +332,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m123p22s99,z222+,p111-"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -341,7 +342,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33p222777s888m23"),
       "m4=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(50);
@@ -351,7 +352,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s33p111999z555m23"),
       "m4=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(60);
@@ -361,7 +362,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p33m22245667,s444+4"),
       "m8=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -371,7 +372,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p33m23445667,z6666-"),
       "m8=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -381,7 +382,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p33m23445667,s4444"),
       "m8=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(50);
@@ -391,7 +392,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p33m23445667,z7777"),
       "m8=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(70);
@@ -401,7 +402,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p33m222s222345,s888-"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -411,7 +412,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m222s222345p3,s888-"),
       "p3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -421,7 +422,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p33m222s22235,s888-"),
       "s4=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -431,7 +432,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p33z111m12389,s222-"),
       "m7=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(40);
@@ -441,7 +442,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22p345678s34,s67-8"),
       "s5=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(30);
@@ -451,7 +452,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m2255p88s1166z1155"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBe(25);
@@ -461,7 +462,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m19p19s1z12345677s9"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBeUndefined();
@@ -471,7 +472,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11123456789995"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.hu).toBeUndefined();
@@ -481,7 +482,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66"),
       "s3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toBeUndefined();
@@ -491,7 +492,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66*"),
       "s3=",
-      Hora.createSituationParam({ riichi: 1 })
+      Hora.createSituationParam({ riichi: 1 }),
     );
 
     // expect(actual).toStrictEqual(expected);
@@ -502,7 +503,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66*"),
       "s3=",
-      Hora.createSituationParam({ riichi: 2 })
+      Hora.createSituationParam({ riichi: 2 }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -514,7 +515,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66*"),
       "s3=",
-      Hora.createSituationParam({ riichi: 1, isOneShot: true })
+      Hora.createSituationParam({ riichi: 1, isOneShot: true }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -527,7 +528,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24z66s3,s6-78"),
       null,
-      Hora.createSituationParam({ haitei: 1 })
+      Hora.createSituationParam({ haitei: 1 }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -539,7 +540,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66"),
       "s3=",
-      Hora.createSituationParam({ haitei: 2 })
+      Hora.createSituationParam({ haitei: 2 }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -551,7 +552,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24z66s3,s777+7"),
       null,
-      Hora.createSituationParam({ isRinShan: true })
+      Hora.createSituationParam({ isRinShan: true }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -563,7 +564,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66"),
       "s3=",
-      Hora.createSituationParam({ isChanKan: true })
+      Hora.createSituationParam({ isChanKan: true }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "槍槓", numHan: 1 }]);
@@ -573,7 +574,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66s3"),
       null,
-      Hora.createSituationParam({ tenho: 1 })
+      Hora.createSituationParam({ tenho: 1 }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "天和", numHan: "*" }]);
@@ -583,7 +584,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66s3"),
       null,
-      Hora.createSituationParam({ tenho: 2 })
+      Hora.createSituationParam({ tenho: 2 }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "地和", numHan: "*" }]);
@@ -593,7 +594,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66s3"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -605,7 +606,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m345567s3378z111"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "場風 東", numHan: 1 }]);
@@ -615,7 +616,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m345567s33789,z333+"),
       null,
-      Hora.createSituationParam({ jikaze: 2 })
+      Hora.createSituationParam({ jikaze: 2 }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "自風 西", numHan: 1 }]);
@@ -625,7 +626,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m345567s33z22,s789-"),
       "z2=",
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -638,7 +639,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m345567s33789,z555+5"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "翻牌 白", numHan: 1 }]);
@@ -648,7 +649,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m345567s33,z6666+,z7777"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -661,7 +662,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33m234456p78s123"),
       "p9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "平和", numHan: 1 }]);
@@ -671,7 +672,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33m234456p78s123p9"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -684,7 +685,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33m234456p78,s1-23"),
       "p9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toBeUndefined();
@@ -694,7 +695,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22555p234s78,p777-"),
       "s6=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "断幺九", numHan: 1 }]);
@@ -704,7 +705,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m2255p4488s33667"),
       "s7=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -717,7 +718,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m33455p111s33789"),
       "m4=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "一盃口", numHan: 1 }]);
@@ -727,7 +728,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m33455p111s33,s78-9"),
       "m4=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toBeUndefined();
@@ -737,7 +738,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m567p567s2256799"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -749,7 +750,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m567s2256799,p56-7"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -761,7 +762,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m12456789s33789"),
       "m3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -773,7 +774,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m12789s33789,m4-56"),
       "m3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -785,7 +786,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m123999p789z33s12"),
       "s3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -797,7 +798,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m123p789z33s12,m999+"),
       "s3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -809,7 +810,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m115599p2233s8z22"),
       "s8=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "七対子", numHan: 2 }]);
@@ -819,7 +820,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m55888z333s22,p111="),
       "s2=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "対々和", numHan: 2 }]);
@@ -829,7 +830,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p99s111m555,p345-,s3333"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "三暗刻", numHan: 2 }]);
@@ -839,7 +840,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p11m45,s2222+,m888=8,z4444"),
       "m3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "三槓子", numHan: 2 }]);
@@ -849,7 +850,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s12377m22,p222-,s222-"),
       "m2=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -861,7 +862,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z11p11199,m111=,z333+"),
       "p9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -874,7 +875,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m1199p11s99z11335"),
       "z5=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -887,7 +888,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z55577m567p22,z666-"),
       "p2=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -901,7 +902,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m111234789z1133"),
       "z3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "混一色", numHan: 3 }]);
@@ -911,7 +912,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z11333p23478,p111+"),
       "p9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "混一色", numHan: 2 }]);
@@ -921,7 +922,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s11224488z22557"),
       "z7=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -934,7 +935,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11s123p789s789m99"),
       "m9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -946,7 +947,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11s123p789s78,m999="),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -958,7 +959,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m223344p667788s9"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "二盃口", numHan: 3 }]);
@@ -968,7 +969,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m222233334444s9"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "二盃口", numHan: 3 }]);
@@ -978,7 +979,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m223344p678s9,p678-"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toBeUndefined();
@@ -988,7 +989,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m1113456677778"),
       "m9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "清一色", numHan: 6 }]);
@@ -998,7 +999,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p2344555,p12-3,p7-89"),
       "p1=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "清一色", numHan: 5 }]);
@@ -1008,7 +1009,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s1122445577889"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1021,7 +1022,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m119p19s19z1234567"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1033,7 +1034,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m19p19s19z1234567m1"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1045,7 +1046,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m33m111p333s777z111"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1057,7 +1058,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m111p333s777z111m3"),
       "m3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1069,7 +1070,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z555m456p22z66,z777+"),
       "z6=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1081,7 +1082,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m2234,z555-5,z6666,z777+"),
       "m5=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1093,7 +1094,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m234z2244,z333+,z111-"),
       "z4=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1105,7 +1106,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22z22244,z333+,z111-"),
       "z4=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1117,7 +1118,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m2,z222+,z4444,z333+,z111-"),
       "m2=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1129,7 +1130,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z1112277,z555=,z444+"),
       "z7=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1141,7 +1142,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z1122334455667"),
       "z7=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1153,7 +1154,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s22334466z66,s888+"),
       "z6=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1165,7 +1166,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s4466,s222=,s333+,s888-"),
       "s6=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1177,7 +1178,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s11p111m11,s999-,m999="),
       "m1=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1189,7 +1190,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m1,z5555,p222+2,p777-7,s1111-"),
       "m1=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1201,7 +1202,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m1112235678999"),
       "m4=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1213,7 +1214,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m1112345678999"),
       "m2=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1225,7 +1226,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p55m234s78,m4-56,z111+"),
       "s9=",
-      Hora.createSituationParam({ baopai: ["s1"] })
+      Hora.createSituationParam({ baopai: ["s1"] }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "場風 東", numHan: 1 }]);
@@ -1235,7 +1236,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p55m234s78,m4-56,z111+"),
       "s9=",
-      Hora.createSituationParam({ baopai: ["m2"] })
+      Hora.createSituationParam({ baopai: ["m2"] }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1248,7 +1249,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p55m234s78,m4-56,z111+"),
       "s9=",
-      Hora.createSituationParam({ baopai: ["p4"] })
+      Hora.createSituationParam({ baopai: ["p4"] }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1261,7 +1262,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p55m23s789,m4-56,z111+"),
       "m4=",
-      Hora.createSituationParam({ baopai: ["m3"] })
+      Hora.createSituationParam({ baopai: ["m3"] }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1274,7 +1275,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p55m234s78,m4-56,z111+"),
       "s9=",
-      Hora.createSituationParam({ baopai: ["s1", "m2"] })
+      Hora.createSituationParam({ baopai: ["s1", "m2"] }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1287,7 +1288,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p50m234s78,m4-06,z111+"),
       "s9=",
-      Hora.createSituationParam({ baopai: ["s1"] })
+      Hora.createSituationParam({ baopai: ["s1"] }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1300,7 +1301,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p55m234s78,m4-06,z111+"),
       "s9=",
-      Hora.createSituationParam({ baopai: ["m4"] })
+      Hora.createSituationParam({ baopai: ["m4"] }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1314,7 +1315,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p55m234s78,m4-56,z111+"),
       "s9=",
-      Hora.createSituationParam({ baopai: ["m0"] })
+      Hora.createSituationParam({ baopai: ["m0"] }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1327,7 +1328,11 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66*"),
       "s3=",
-      Hora.createSituationParam({ riichi: 1, baopai: ["s9"], fubaopai: ["s9"] })
+      Hora.createSituationParam({
+        riichi: 1,
+        baopai: ["s9"],
+        fubaopai: ["s9"],
+      }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([{ name: "立直", numHan: 1 }]);
@@ -1337,7 +1342,11 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66*"),
       "s3=",
-      Hora.createSituationParam({ riichi: 1, baopai: ["s9"], fubaopai: ["m2"] })
+      Hora.createSituationParam({
+        riichi: 1,
+        baopai: ["s9"],
+        fubaopai: ["m2"],
+      }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1350,7 +1359,11 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66*"),
       "s3=",
-      Hora.createSituationParam({ riichi: 1, baopai: ["m2"], fubaopai: ["m2"] })
+      Hora.createSituationParam({
+        riichi: 1,
+        baopai: ["m2"],
+        fubaopai: ["m2"],
+      }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1364,7 +1377,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m344556s24678z66"),
       "s3=",
-      Hora.createSituationParam({ baopai: ["m2"] })
+      Hora.createSituationParam({ baopai: ["m2"] }),
     );
 
     expect(hule?.horaYakuInfos).toBeUndefined();
@@ -1374,7 +1387,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m119p19s19z1234567"),
       null,
-      Hora.createSituationParam({ baopai: ["m9"] })
+      Hora.createSituationParam({ baopai: ["m9"] }),
     );
 
     expect(hule?.horaYakuInfos).toStrictEqual([
@@ -1386,7 +1399,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33m123p456s789m234"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -1406,7 +1419,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33m123p456s789m231"),
       null,
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1427,7 +1440,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33m123p234s234m234"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -1448,7 +1461,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m1122p3344s5566z7"),
       "z7-",
-      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 })
+      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1465,7 +1478,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m1122p3344s5566z77"),
       null,
-      Hora.createSituationParam({ jikaze: 0, numRiichiBou: 1, numTsumibou: 1 })
+      Hora.createSituationParam({ jikaze: 0, numRiichiBou: 1, numTsumibou: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1485,7 +1498,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m2277p3344s556688"),
       null,
-      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 })
+      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1506,7 +1519,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m77234p456s67,m34-5"),
       "s8=",
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1523,7 +1536,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m77234p345s34,m34-5"),
       "s5-",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -1543,7 +1556,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22z111p445566s789"),
       null,
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1564,7 +1577,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11z111p123789s789"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -1585,7 +1598,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11234234p456s89"),
       "s7=",
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1602,7 +1615,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22334455p456s68"),
       "s7-",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -1622,7 +1635,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33222m222,s222=,p999+"),
       null,
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1642,7 +1655,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33222m222,s222=,p999+"),
       null,
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1663,7 +1676,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m123p456s789z2227"),
       "z7=",
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1680,7 +1693,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m123p456s789z2227"),
       "z7-",
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1700,7 +1713,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33m222z222,p8888,s789-"),
       null,
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1720,7 +1733,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z33m222z222,p8888,s789-"),
       null,
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1741,7 +1754,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s789z2227,m2222,p111="),
       "z7=",
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1758,7 +1771,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s789z2227,m2222,p111="),
       "z7-",
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1778,7 +1791,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11222789,z2222,m444="),
       null,
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1798,7 +1811,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11222789,z2222,m444="),
       null,
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1819,7 +1832,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m12377p456s78,z2222"),
       "s9=",
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1836,7 +1849,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m12377p456s78,z2222"),
       "s9-",
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1856,7 +1869,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p77s223344,z2222,m2222"),
       null,
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1877,7 +1890,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22s888p34,z222+2,z4444"),
       "p5=",
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1894,7 +1907,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22s888p34,z222+2,z4444"),
       "p5-",
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1914,7 +1927,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11p999s123,z222+2,z1111"),
       null,
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1935,7 +1948,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p88m123s99,s6666,z2222"),
       "s9=",
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1952,7 +1965,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p88m123s99,s6666,z2222"),
       "s9-",
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1972,7 +1985,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22s345,z5555,z2222,z666-"),
       null,
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -1993,7 +2006,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22p345s67,z2222,s9999"),
       "s8=",
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2010,7 +2023,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22p345s67,z2222,s9999"),
       "s8-",
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2030,7 +2043,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z11m999p243,s1111,s9999"),
       null,
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2050,7 +2063,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m234z1177,p1111,s9999"),
       "z7=",
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2067,7 +2080,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m234z2277,p1111,z5555"),
       "z7-",
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2087,7 +2100,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m243z11,p1111,s9999,z555+5"),
       null,
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2107,7 +2120,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22456p456s44556"),
       "s6=",
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2129,7 +2142,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m22456p456s445566"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2152,7 +2165,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m111z3334,z222=,m999-"),
       "z4=",
-      Hora.createSituationParam({ bakaze: 1, jikaze: 0 })
+      Hora.createSituationParam({ bakaze: 1, jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2174,7 +2187,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m111z333444,z222=,m999-"),
       null,
-      Hora.createSituationParam({ bakaze: 1 })
+      Hora.createSituationParam({ bakaze: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2197,7 +2210,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s2223334455567"),
       "s8=",
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2218,7 +2231,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s22233344555678"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2240,7 +2253,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p2233445566778"),
       "p8=",
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2262,7 +2275,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("p22334455667788"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2285,7 +2298,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m1177778888999"),
       "m9=",
-      Hora.createSituationParam({ jikaze: 0 })
+      Hora.createSituationParam({ jikaze: 0 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2307,7 +2320,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z77111z444,z222+,z333-"),
       null,
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2327,7 +2340,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11p456,z555+,z666=,z777-"),
       null,
-      Hora.createSituationParam({ jikaze: 0, numRiichiBou: 1, numTsumibou: 1 })
+      Hora.createSituationParam({ jikaze: 0, numRiichiBou: 1, numTsumibou: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2344,7 +2357,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11p45,z555+,z666=,z777-"),
       "p6=",
-      Hora.createSituationParam({ jikaze: 0, numRiichiBou: 1, numTsumibou: 1 })
+      Hora.createSituationParam({ jikaze: 0, numRiichiBou: 1, numTsumibou: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2361,7 +2374,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m11p45,z555+,z666=,z777-"),
       "p6-",
-      Hora.createSituationParam({ jikaze: 0, numRiichiBou: 1, numTsumibou: 1 })
+      Hora.createSituationParam({ jikaze: 0, numRiichiBou: 1, numTsumibou: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2378,7 +2391,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z77,z111-,z2222,z333=3,z444+"),
       null,
-      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 })
+      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2398,7 +2411,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z7,z111-,z2222,z333=3,z444+"),
       "z7-",
-      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 })
+      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2418,7 +2431,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("z7,z111-,z2222,z333=3,z444+"),
       "z7+",
-      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 })
+      Hora.createSituationParam({ numRiichiBou: 1, numTsumibou: 1 }),
     );
 
     expect(hule).toStrictEqual({
@@ -2438,7 +2451,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m223344p556677s8"),
       "s8=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2458,7 +2471,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m2234455p234s234"),
       "m3=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2479,7 +2492,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m111222333p8999"),
       "p7=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2499,7 +2512,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m12334p567z11z777"),
       "m2=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2516,7 +2529,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("m111222333p7899"),
       "p9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2537,7 +2550,7 @@ describe("hule メソッド", () => {
     const hule = Hora.hora(
       Hand.fromString("s1112223335578"),
       "s9=",
-      Hora.createSituationParam()
+      Hora.createSituationParam(),
     );
 
     expect(hule).toStrictEqual({
@@ -2562,7 +2575,7 @@ describe("hule メソッド", () => {
         isOneShot: true,
         baopai: ["m2"],
         fubaopai: ["m5"],
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2597,7 +2610,7 @@ describe("ルール変更", () => {
       Hora.createSituationParam({
         jikaze: 0,
         rule: { ...ruleForTest, 連風牌は2符: true },
-      })
+      }),
     );
 
     expect(hule?.hu).toBe(30);
@@ -2609,7 +2622,7 @@ describe("ルール変更", () => {
       "s6=",
       Hora.createSituationParam({
         rule: { ...ruleForTest, クイタンあり: false },
-      })
+      }),
     );
 
     expect(hule?.horaYakuInfos).toBeUndefined();
@@ -2621,7 +2634,7 @@ describe("ルール変更", () => {
       "s6=",
       Hora.createSituationParam({
         rule: { ...ruleForTest, クイタンあり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2640,7 +2653,7 @@ describe("ルール変更", () => {
       "m1+",
       Hora.createSituationParam({
         rule: { ...ruleForTest, ダブル役満あり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2659,7 +2672,7 @@ describe("ルール変更", () => {
       "m3=",
       Hora.createSituationParam({
         rule: { ...ruleForTest, ダブル役満あり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2678,7 +2691,7 @@ describe("ルール変更", () => {
       "z4=",
       Hora.createSituationParam({
         rule: { ...ruleForTest, ダブル役満あり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2697,7 +2710,7 @@ describe("ルール変更", () => {
       "m2=",
       Hora.createSituationParam({
         rule: { ...ruleForTest, ダブル役満あり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2718,7 +2731,7 @@ describe("ルール変更", () => {
         numRiichiBou: 1,
         numTsumibou: 1,
         rule: { ...ruleForTest, 役満の複合あり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2742,7 +2755,7 @@ describe("ルール変更", () => {
         numRiichiBou: 1,
         numTsumibou: 1,
         rule: { ...ruleForTest, 役満の複合あり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2764,7 +2777,7 @@ describe("ルール変更", () => {
       "m5=",
       Hora.createSituationParam({
         rule: { ...ruleForTest, 役満パオあり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2783,7 +2796,7 @@ describe("ルール変更", () => {
       "m2=",
       Hora.createSituationParam({
         rule: { ...ruleForTest, 役満パオあり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2803,7 +2816,7 @@ describe("ルール変更", () => {
       Hora.createSituationParam({
         riichi: 1,
         rule: { ...ruleForTest, 数え役満あり: false },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2831,7 +2844,7 @@ describe("ルール変更", () => {
         bakaze: 1,
         jikaze: 0,
         rule: { ...ruleForTest, 切り上げ満貫あり: true },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2854,7 +2867,7 @@ describe("ルール変更", () => {
       null,
       Hora.createSituationParam({
         rule: { ...ruleForTest, 切り上げ満貫あり: true },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({
@@ -2879,7 +2892,7 @@ describe("ルール変更", () => {
         bakaze: 1,
         jikaze: 0,
         rule: { ...ruleForTest, 切り上げ満貫あり: true },
-      })
+      }),
     );
 
     expect(hule).toStrictEqual({

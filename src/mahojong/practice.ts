@@ -1,9 +1,14 @@
 import CustomPaiYama from "./custom/customPaiyama";
-import Hand, { MenzenPais } from "./hand";
-import { getHoraType, hora, HoraAmountInfo, SituationParam } from "./hora";
+import Hand, { type MenzenPais } from "./hand";
+import {
+  getHoraType,
+  hora,
+  type HoraAmountInfo,
+  type SituationParam,
+} from "./hora";
 import { Kawa } from "./kawa";
-import Pai, { Mentsu, RonPai } from "./pai";
-import { Rule } from "./rule";
+import type { Mentsu, Pai, RonPai } from "./pai";
+import type { Rule } from "./rule";
 import * as Shanten from "./shanten";
 
 /** 1人麻雀練習機の設定値 */
@@ -95,7 +100,7 @@ export class PracticeGame {
     haipaiSettings: HaipaiSettings = {
       haipai: undefined,
       paiyama: undefined,
-    }
+    },
   ) {
     this._settings = settings;
     this._initHaipai = haipaiSettings.haipai;
@@ -313,8 +318,8 @@ export class PracticeGame {
         tenho: !this._isFirstTsumo
           ? 0
           : this._situationParam.jikaze === 0
-          ? 1
-          : 2,
+            ? 1
+            : 2,
       },
     };
 
@@ -558,7 +563,7 @@ export class PracticeGame {
           const ronPaiDummy = (p + "+") as RonPai;
           numHoraMentsuBeforeKan += getHoraType(
             handBeforeKan,
-            ronPaiDummy
+            ronPaiDummy,
           ).length;
         }
 
@@ -570,7 +575,7 @@ export class PracticeGame {
           const ronPaiDummy = (p + "+") as RonPai;
           numHoraMentsuAfterKan += getHoraType(
             handAfterKan,
-            ronPaiDummy
+            ronPaiDummy,
           ).length;
         }
 

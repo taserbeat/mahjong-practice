@@ -259,5 +259,3 @@ type JiRonPai =
   | "z7+"
   | "z7="
   | "z7-";
-
-export default Pai;

@@ -1,5 +1,5 @@
 import Hand from "./hand";
-import Pai from "./pai";
+import type { Pai } from "./pai";
 
 /**
  * 各色の面子数、塔子数、孤立牌数をカウントする型
@@ -17,7 +17,7 @@ export const calcNumShanten = (hand: Hand): number => {
   return Math.min(
     calcNumShantenAsNormal(hand),
     calcNumShantenAsKokushi(hand),
-    calcNumShantenAsChiitoi(hand)
+    calcNumShantenAsChiitoi(hand),
   );
 };
 
@@ -95,7 +95,7 @@ export const calcNumShantenAsNormal = (hand: Hand): number => {
 /** 雀頭の有無を指定してシャンテン数を数える */
 const _calcShantenAsNormalByHead = (
   shoupai: Hand,
-  hasHead: boolean
+  hasHead: boolean,
 ): number => {
   // 各色ごとの面子・塔子・孤立牌数をカウントする
   let r = {
@@ -107,8 +107,10 @@ const _calcShantenAsNormalByHead = (
   // 字牌の面子・塔子・孤立牌数をカウントする
   let z = [0, 0, 0];
   for (let n = 1; n <= 7; n++) {
-    if (shoupai._menzenPais.z[n] >= 3) z[0]++; // 面子
-    else if (shoupai._menzenPais.z[n] == 2) z[1]++; // 塔子
+    if (shoupai._menzenPais.z[n] >= 3)
+      z[0]++; // 面子
+    else if (shoupai._menzenPais.z[n] == 2)
+      z[1]++; // 塔子
     else if (shoupai._menzenPais.z[n] == 1) z[2]++; // 孤立牌
   }
 
@@ -130,7 +132,7 @@ const _calcShantenAsNormalByHead = (
           x[0],
           x[1],
           x[2],
-          hasHead
+          hasHead,
         );
         if (numShanten < minNumShanten) {
           minNumShanten = numShanten;
@@ -150,7 +152,7 @@ const _calcShantenAsNormalByHead = (
  * */
 const _calcMentsuOnColor = (
   paisOnColor: number[],
-  n = 1
+  n = 1,
 ): ShantenPatternOnColor => {
   // 面子抜き取り後に塔子数、孤立牌数をカウントする
   if (n > 9) return _calcTaatsuPatternOnColor(paisOnColor);
@@ -213,7 +215,7 @@ const _calcMentsuOnColor = (
 
 /** 各色の塔子の抜き取り方のパターンを計算する */
 const _calcTaatsuPatternOnColor = (
-  paisOnColor: number[]
+  paisOnColor: number[],
 ): ShantenPatternOnColor => {
   let numTaatsuGroup = 0; // 現在の塔子グループ牌数
   let sumTaatsu = 0; // 総塔子数
@@ -243,7 +245,7 @@ const _calcNumShantenAsNormalFormula = (
   m: number,
   d: number,
   g: number,
-  hasHead: boolean
+  hasHead: boolean,
 ) => {
   // 必要なブロック数
   let numBlocksToTenpai = hasHead ? 4 : 5;
@@ -279,7 +281,7 @@ const _calcNumShantenAsNormalFormula = (
  */
 export const calcImproveShantenPais = (
   hand: Hand,
-  calculator = calcNumShanten
+  calculator = calcNumShanten,
 ): Pai[] | null => {
   // ツモると多牌になる場合はnullを返す
   if (hand._tsumoPai) return null;

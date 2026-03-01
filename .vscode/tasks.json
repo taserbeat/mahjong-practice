@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "npm: debug",
+      "label": "yarn: debug",
       "type": "npm",
       "script": "debug",
       "path": "",
@@ -20,8 +20,8 @@
         },
         "background": {
           "activeOnStart": true,
-          "beginsPattern": "yarn run.*",
-          "endsPattern": ".*compiled successfully.*"
+          "beginsPattern": "VITE",
+          "endsPattern": "ready in"
         }
       },
       "group": {

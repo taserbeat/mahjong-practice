@@ -11,16 +11,13 @@ import {
   selectHaipaiSetting,
   selectPaiyamaSetting,
 } from "../../features/haipai/haipaiSlice";
-import Pai from "../../mahojong/pai";
+import type { Pai } from "../../mahojong/pai";
 import MahojongPai from "../pai/MahojongPai";
 
 import "../../styles/pages/SettingPage.scss";
 
-/** 設定画面のコンポーネントのProps */
-interface SettingPageProps {}
-
 /** 設定画面のコンポーネント */
-const SettingPage = (props: SettingPageProps) => {
+const SettingPage = () => {
   const dispatch = useAppDispatch();
 
   const onStartClick = () => {

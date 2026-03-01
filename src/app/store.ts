@@ -1,5 +1,8 @@
-import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
-
+import {
+  type Action,
+  type ThunkAction,
+  configureStore,
+} from "@reduxjs/toolkit";
 import modeReducer from "../features/mode/modeSlice";
 import settingsReducer from "../features/settings/settingsSlice";
 import horaReducer from "../features/hora/horaSlice";

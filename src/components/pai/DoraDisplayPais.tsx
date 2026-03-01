@@ -2,8 +2,7 @@ import MahojongPai from "./MahojongPai";
 
 import "../../styles/pai/DoraDisplayPais.scss";
 
-/** ドラ表示牌のProps
- */
+/** ドラ表示牌のProps */
 interface DoraDisplayPais {
   /** ドラ表示牌を表す文字列の配列 */
   doraDisplayPais: string[];

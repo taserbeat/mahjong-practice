@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import Hand from "../hand";
 import {
   calcImproveShantenPais,
@@ -19,31 +20,31 @@ describe("calcNumShantenAsNormal 関数", () => {
 
   it("聴牌形", () => {
     expect(calcNumShantenAsNormal(Hand.fromString("m123p406s789z1122"))).toBe(
-      0
+      0,
     );
   });
 
   it("和了形", () => {
     expect(calcNumShantenAsNormal(Hand.fromString("m123p456s789z11222"))).toBe(
-      -1
+      -1,
     );
   });
 
   it("副露あり", () => {
     expect(
-      calcNumShantenAsNormal(Hand.fromString("m123p456s789z2,z111="))
+      calcNumShantenAsNormal(Hand.fromString("m123p456s789z2,z111=")),
     ).toBe(0);
   });
 
   it("雀頭なし", () => {
     expect(calcNumShantenAsNormal(Hand.fromString("m12389p456s12789z1"))).toBe(
-      1
+      1,
     );
   });
 
   it("搭子過多", () => {
     expect(calcNumShantenAsNormal(Hand.fromString("m12389p456s1289z11"))).toBe(
-      1
+      1,
     );
   });
 
@@ -82,7 +83,7 @@ describe("calcNumShantenAsNormal 関数", () => {
 
   it("副露直後の牌姿が和了形", () => {
     expect(
-      calcNumShantenAsNormal(Hand.fromString("m11122,p123-,s12-3,z111=,"))
+      calcNumShantenAsNormal(Hand.fromString("m11122,p123-,s12-3,z111=,")),
     ).toBe(0);
   });
 
@@ -122,57 +123,57 @@ describe("calcNumShantenAsKokushi 関数", () => {
 
   it("幺九牌なし", () => {
     expect(calcNumShantenAsKokushi(Hand.fromString("m23455p345s45678"))).toBe(
-      13
+      13,
     );
   });
 
   it("雀頭なし", () => {
     expect(calcNumShantenAsKokushi(Hand.fromString("m189p12s249z12345"))).toBe(
-      4
+      4,
     );
   });
 
   it("雀頭あり", () => {
     expect(calcNumShantenAsKokushi(Hand.fromString("m119p12s299z12345"))).toBe(
-      3
+      3,
     );
   });
 
   it("聴牌形", () => {
     expect(calcNumShantenAsKokushi(Hand.fromString("m11p19s19z1234567"))).toBe(
-      0
+      0,
     );
   });
 
   it("聴牌形(13面張)", () => {
     expect(calcNumShantenAsKokushi(Hand.fromString("m19p19s19z1234567"))).toBe(
-      0
+      0,
     );
   });
 
   it("和了形", () => {
     expect(calcNumShantenAsKokushi(Hand.fromString("m119p19s19z1234567"))).toBe(
-      -1
+      -1,
     );
   });
 
   it("副露あり", () => {
     expect(
-      calcNumShantenAsKokushi(Hand.fromString("m19p19s19z1234,z777="))
+      calcNumShantenAsKokushi(Hand.fromString("m19p19s19z1234,z777=")),
     ).toBe(Infinity);
   });
 
   it("多牌", () => {
     expect(
       calcNumShantenAsKokushi(
-        Hand.fromString("m19p19s19z12345677").tsumo("m1", false)
-      )
+        Hand.fromString("m19p19s19z12345677").tsumo("m1", false),
+      ),
     ).toBe(-1);
   });
 
   it("少牌", () => {
     expect(calcNumShantenAsKokushi(Hand.fromString("m119p19s19z12345"))).toBe(
-      1
+      1,
     );
   });
 
@@ -212,43 +213,43 @@ describe("calcNumShantenAsChiitoi 関数", () => {
 
   it("対子なし", () => {
     expect(calcNumShantenAsChiitoi(Hand.fromString("m19p19s19z1234567"))).toBe(
-      6
+      6,
     );
   });
 
   it("槓子あり", () => {
     expect(calcNumShantenAsChiitoi(Hand.fromString("m1188p288s05z1111"))).toBe(
-      2
+      2,
     );
   });
 
   it("暗刻あり", () => {
     expect(calcNumShantenAsChiitoi(Hand.fromString("m1188p2388s05z111"))).toBe(
-      1
+      1,
     );
   });
 
   it("暗刻2つ", () => {
     expect(calcNumShantenAsChiitoi(Hand.fromString("m1188p288s055z111"))).toBe(
-      2
+      2,
     );
   });
 
   it("聴牌形", () => {
     expect(calcNumShantenAsChiitoi(Hand.fromString("m1188p288s05z1177"))).toBe(
-      0
+      0,
     );
   });
 
   it("和了形", () => {
     expect(
-      calcNumShantenAsChiitoi(Hand.fromString("m1188p288s05z1177p2"))
+      calcNumShantenAsChiitoi(Hand.fromString("m1188p288s05z1177p2")),
     ).toBe(-1);
   });
 
   it("副露あり", () => {
     expect(
-      calcNumShantenAsChiitoi(Hand.fromString("m1188p288s05z2,z111="))
+      calcNumShantenAsChiitoi(Hand.fromString("m1188p288s05z2,z111=")),
     ).toBe(Infinity);
   });
 
@@ -257,8 +258,8 @@ describe("calcNumShantenAsChiitoi 関数", () => {
       calcNumShantenAsChiitoi(
         Hand.fromString("m1188p2288s05z1122")
           .tsumo("z7", false)
-          .tsumo("z7", false)
-      )
+          .tsumo("z7", false),
+      ),
     ).toBe(-1);
   });
 
@@ -348,29 +349,29 @@ describe("calcNumShanten 関数", () => {
 describe("calcImproveShantenPais 関数", () => {
   it("打牌可能な状態のとき、エラーとなること", () => {
     expect(
-      calcImproveShantenPais(Hand.fromString("m123p456s789z12345"))
+      calcImproveShantenPais(Hand.fromString("m123p456s789z12345")),
     ).toBeNull();
 
     expect(
-      calcImproveShantenPais(Hand.fromString("m123p456z12345,s789-,"))
+      calcImproveShantenPais(Hand.fromString("m123p456z12345,s789-,")),
     ).toBeNull();
   });
 
   it("副露なし", () => {
     expect(
-      calcImproveShantenPais(Hand.fromString("m123p456s789z1234"))
+      calcImproveShantenPais(Hand.fromString("m123p456s789z1234")),
     ).toEqual(expect.arrayContaining(["z1", "z2", "z3", "z4"]));
   });
 
   it("副露あり", () => {
     expect(
-      calcImproveShantenPais(Hand.fromString("m123p456z1234,s789-"))
+      calcImproveShantenPais(Hand.fromString("m123p456z1234,s789-")),
     ).toEqual(expect.arrayContaining(["z1", "z2", "z3", "z4"]));
   });
 
   it("国士無双13面待ち", () => {
     expect(
-      calcImproveShantenPais(Hand.fromString("m19p19s19z1234567"))
+      calcImproveShantenPais(Hand.fromString("m19p19s19z1234567")),
     ).toEqual(
       expect.arrayContaining([
         "m1",
@@ -386,25 +387,25 @@ describe("calcImproveShantenPais 関数", () => {
         "z5",
         "z6",
         "z7",
-      ])
+      ]),
     );
   });
 
   it("打牌可能な手牌に4枚ある牌は待ち牌としないこと", () => {
     expect(calcImproveShantenPais(Hand.fromString("m1234444p456s789"))).toEqual(
-      expect.arrayContaining(["m1"])
+      expect.arrayContaining(["m1"]),
     );
   });
 
   it("暗刻の牌は待ち牌とできること", () => {
     expect(
-      calcImproveShantenPais(Hand.fromString("m13p456s789z11,m2222"))
+      calcImproveShantenPais(Hand.fromString("m13p456s789z11,m2222")),
     ).toEqual(expect.arrayContaining(["m2"]));
   });
 
   it("七対子と面子手で同じ向聴数", () => {
     expect(
-      calcImproveShantenPais(Hand.fromString("m11155p2278s66z17"))
+      calcImproveShantenPais(Hand.fromString("m11155p2278s66z17")),
     ).toEqual(
       expect.arrayContaining([
         "m5",
@@ -416,7 +417,7 @@ describe("calcImproveShantenPais 関数", () => {
         "s6",
         "z1",
         "z7",
-      ])
+      ]),
     );
   });
 
@@ -424,8 +425,8 @@ describe("calcImproveShantenPais 関数", () => {
     expect(
       calcImproveShantenPais(
         Hand.fromString("m11155p2278s66z17"),
-        calcNumShantenAsChiitoi
-      )
+        calcNumShantenAsChiitoi,
+      ),
     ).toEqual(expect.arrayContaining(["p7", "p8", "z1", "z7"]));
   });
 });

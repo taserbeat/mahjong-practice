@@ -1,7 +1,7 @@
 import Hand from "./hand";
-import Pai, { RonPai } from "./pai";
+import type { Pai, RonPai } from "./pai";
 import PaiYama from "./paiyama";
-import { Rule, ruleForTest } from "./rule";
+import { ruleForTest, type Rule } from "./rule";
 
 /** 状況役を記録する型 */
 export type SituationMeta = {
@@ -231,7 +231,7 @@ export type HoraAmountInfo = {
 export const hora = (
   hand: Hand,
   ronPai: RonPai | null,
-  param: SituationParam
+  param: SituationParam,
 ): HoraAmountInfo | undefined => {
   let ronPaiToBonusYaku: Pai | null = null; // getBonusYakus関数に渡す変数
 
@@ -254,7 +254,7 @@ export const hora = (
     hand,
     ronPaiToBonusYaku,
     param.baopai,
-    param.fubaopai
+    param.fubaopai,
   );
 
   for (let mentsuList of getHoraType(hand, ronPai)) {
@@ -262,7 +262,7 @@ export const hora = (
       mentsuList,
       param.bakaze,
       param.jikaze,
-      param.rule
+      param.rule,
     );
 
     const horaYakuInfos = getHoraYakus(
@@ -270,7 +270,7 @@ export const hora = (
       composition,
       situationYakus,
       bonusYakus,
-      param.rule
+      param.rule,
     );
 
     const rv = calcHoraPoint(composition.hu, horaYakuInfos, ronPai, param);
@@ -294,7 +294,7 @@ const calcHoraPoint = (
   hu: number,
   horaYakuInfos: HoraYakuInfo[],
   rongpai: RonPai | null,
-  param: SituationParam
+  param: SituationParam,
 ): HoraAmountInfo => {
   // 役無しの場合、打点0を返す
   if (horaYakuInfos.length === 0) {
@@ -359,14 +359,14 @@ const calcHoraPoint = (
       numHan >= 13 && param.rule["数え役満あり"]
         ? 8000 // 数え役満
         : numHan >= 11
-        ? 6000 // 三倍満
-        : numHan >= 8
-        ? 4000 // 倍満
-        : numHan >= 6
-        ? 3000 // 跳満
-        : param.rule["切り上げ満貫あり"] && hu << (2 + numHan) === 1920
-        ? 2000 // 切り上げ満貫
-        : Math.min(hu << (2 + numHan), 2000); // それ以外は2000点を上限とする
+          ? 6000 // 三倍満
+          : numHan >= 8
+            ? 4000 // 倍満
+            : numHan >= 6
+              ? 3000 // 跳満
+              : param.rule["切り上げ満貫あり"] && hu << (2 + numHan) === 1920
+                ? 2000 // 切り上げ満貫
+                : Math.min(hu << (2 + numHan), 2000); // それ以外は2000点を上限とする
   }
 
   let fenpei = [0, 0, 0, 0];
@@ -517,7 +517,7 @@ export const getBonusYakus = (
   hand: Hand,
   ronPai: Pai | null,
   doraDisplayPais: Pai[],
-  backDoraDisplayPais: Pai[] | null
+  backDoraDisplayPais: Pai[] | null,
 ): HoraYakuInfo[] => {
   // 手牌に和了牌を加え、文字列形式に変換する
   let newHand = hand.clone();
@@ -577,7 +577,7 @@ export const getHoraYakus = (
   composition: MentsuComposition,
   situationYakus: HoraYakuInfo[],
   post_hupai: HoraYakuInfo[],
-  rule: Rule
+  rule: Rule,
 ): HoraYakuInfo[] => {
   /** 門前清自摸和 */
   function menqianqing(): HoraYakuInfo[] {
@@ -856,7 +856,7 @@ export const getHoraYakus = (
 
     if (kootsu.z[5] + kootsu.z[6] + kootsu.z[7] === 3) {
       let bao_mianzi = mianzi.filter((m) =>
-        m.match(/^z([567])\1\1(?:[\+\=\-]|\1)(?!\!)/)
+        m.match(/^z([567])\1\1(?:[\+\=\-]|\1)(?!\!)/),
       );
       let baojia = bao_mianzi[2] && bao_mianzi[2].match(/[\+\=\-]/);
       if (baojia) {
@@ -873,7 +873,7 @@ export const getHoraYakus = (
 
     if (kootsu.z[1] + kootsu.z[2] + kootsu.z[3] + kootsu.z[4] === 4) {
       let bao_mianzi = mianzi.filter((m) =>
-        m.match(/^z([1234])\1\1(?:[\+\=\-]|\1)(?!\!)/)
+        m.match(/^z([1234])\1\1(?:[\+\=\-]|\1)(?!\!)/),
       );
       let baojia = bao_mianzi[3] && bao_mianzi[3].match(/[\+\=\-]/);
 
@@ -1000,7 +1000,7 @@ export const getMentsuComposition = (
   mentsuList: string[],
   bakaze: 0 | 1 | 2 | 3,
   jikaze: 0 | 1 | 2 | 3,
-  rule: Rule
+  rule: Rule,
 ): MentsuComposition => {
   // パターンマッチ用の正規表現
   const regBakazePai = new RegExp(`^z${bakaze + 1}.*$`); // 場風
@@ -1196,7 +1196,8 @@ export const getMentsuComposition = (
       if (!composition.isPinhu) composition.hu += 2; // 平和以外は2符加算
     } else {
       /*** ロン和了の場合 ***/
-      if (composition.isMenzen) composition.hu += 10; // 門前の場合は10符加算
+      if (composition.isMenzen)
+        composition.hu += 10; // 門前の場合は10符加算
       else if (composition.hu === 20) composition.hu = 30; // 符のない副露手は30符固定
     }
 
@@ -1423,7 +1424,7 @@ const _getAllMentsuPattern = (hand: Hand): string[][] => {
 
   // 萬子・筒子・索子の副露していない和了系すべての後方に、字牌刻子と副露面子を追加する
   const mentsuList = suHaiAll.map((suHai) =>
-    suHai.concat(jiHaiMentsuList).concat(normFulos)
+    suHai.concat(jiHaiMentsuList).concat(normFulos),
   );
 
   return mentsuList;
@@ -1433,7 +1434,7 @@ const _getAllMentsuPattern = (hand: Hand): string[][] => {
 const _getMentsuInColor = (
   s: "m" | "p" | "s",
   menzenSuPais: number[],
-  n = 1
+  n = 1,
 ): string[][] => {
   if (n > 9) return [[]];
 
@@ -1478,7 +1479,7 @@ const _getMentsuInColor = (
 /** 和了牌にマークをつける */
 const _addMarkToHoraPai = (
   mentsuList: string[],
-  horaPai: string
+  horaPai: string,
 ): string[][] => {
   const s = horaPai[0];
   const n = horaPai[1];
@@ -1534,7 +1535,7 @@ export const createSituationParam = (
     fubaopai?: Pai[] | null;
     numRiichiBou?: number;
     numTsumibou?: number;
-  } = {}
+  } = {},
 ): SituationParam => {
   return {
     rule: param.rule ?? ruleForTest,

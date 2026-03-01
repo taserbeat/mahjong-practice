@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "../../app/store";
 
 export type ModeName = "Setting" | "Practice" | "Result";
 
@@ -19,7 +19,7 @@ export const modeSlice = createSlice({
   initialState: initialState,
   reducers: {
     /** 初期状態にする */
-    initialize: (state) => {
+    initialize: () => {
       return initialState;
     },
     /** 指定したモードをセットする */
