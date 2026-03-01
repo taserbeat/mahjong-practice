@@ -3,21 +3,15 @@ import Button from "@mui/material/Button";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectHoraResult } from "../../features/hora/horaSlice";
 import { setMode } from "../../features/mode/modeSlice";
-import Hand from "../../mahojong/hand";
 import HoraResultDisplay from "../result/HoraResultDisplay";
 
 import "../../styles/pages/ResultPage.scss";
 
-/** リザルトページのコンポーネントのProps */
-export interface ResultPageProps {}
-
 /** リザルトページのコンポーネント */
-const ResultPage = (props: ResultPageProps) => {
+const ResultPage = () => {
   const dispatch = useAppDispatch();
 
   const horaResult = useAppSelector(selectHoraResult);
-  const paishi = horaResult.situationInfo.paisi;
-  const hand = Hand.fromString(paishi);
 
   /** 同じ設定で続ける */
   const onContinueWithSameSetting = () => {

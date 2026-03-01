@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Kaze, PracticeSettings } from "../../mahojong/practice";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { Kaze, PracticeSettings } from "../../mahojong/practice";
 import { defaultRule } from "../../mahojong/rule";
-import { RootState } from "../../app/store";
+import type { RootState } from "../../app/store";
 
 /** アプリの設定値 */
 type AppSettings = {
@@ -28,7 +28,7 @@ export const settingsSlice = createSlice({
   initialState: initialState,
   reducers: {
     /** 初期状態にする */
-    initialize: (state) => initialState,
+    initialize: () => initialState,
 
     /** 場風を設定する */
     setBakaze: (state, action: PayloadAction<Kaze>) => {

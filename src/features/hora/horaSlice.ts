@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { HoraAmountInfo } from "../../mahojong/hora";
-import { RootState } from "../../app/store";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { HoraAmountInfo } from "../../mahojong/hora";
+import type { RootState } from "../../app/store";
 
 /** 結果表示用の場況情報 */
 type ResultSituationInfo = {
@@ -48,8 +48,8 @@ export const horaSlice = createSlice({
   reducers: {
     /** ノーテンの結果をセットする */
     setNoTenpaiResult: (
-      state,
-      action: PayloadAction<ResultSituationInfo | undefined>
+      _state,
+      action: PayloadAction<ResultSituationInfo | undefined>,
     ) => {
       return {
         horaInfo: null,
@@ -65,11 +65,11 @@ export const horaSlice = createSlice({
 
     /** 和了結果をセットする */
     setHoraResult: (
-      state,
+      _state,
       action: PayloadAction<{
         horaInfo: HoraAmountInfo;
         situationInfo: ResultSituationInfo;
-      }>
+      }>,
     ) => {
       return {
         horaInfo: action.payload.horaInfo,
@@ -81,8 +81,8 @@ export const horaSlice = createSlice({
 
     /** テンパイの結果をセットする */
     setTenpaiResult: (
-      state,
-      action: PayloadAction<ResultSituationInfo | undefined>
+      _state,
+      action: PayloadAction<ResultSituationInfo | undefined>,
     ) => {
       return {
         horaInfo: null,
@@ -98,8 +98,8 @@ export const horaSlice = createSlice({
 
     /** 九種九牌の結果をセットする */
     setKyusyuResult: (
-      state,
-      action: PayloadAction<ResultSituationInfo | undefined>
+      _state,
+      action: PayloadAction<ResultSituationInfo | undefined>,
     ) => {
       return {
         horaInfo: null,

@@ -17,7 +17,6 @@ import {
 import { defaultRule } from "../../mahojong/rule";
 import useRender from "../../hooks/useRender";
 import MahojongPai from "../pai/MahojongPai";
-import { MenzenPais } from "../../mahojong/hand";
 import {
   setNoTenpaiResult,
   setHoraResult,
@@ -26,7 +25,6 @@ import {
 } from "../../features/hora/horaSlice";
 import KawaPais from "../pai/KawaPais";
 import DoraDisplayPais from "../pai/DoraDisplayPais";
-import { HoraAmountInfo } from "../../mahojong/hora";
 import FuloMentsu from "../pai/FuloMentsu";
 import {
   selectHaipaiSetting,
@@ -35,9 +33,8 @@ import {
 import useAccept from "../../hooks/useAccept";
 
 import "../../styles/pages/PracticePage.scss";
-
-/** 練習ページのコンポーネントのProps */
-interface PracticePageProps {}
+import type { HoraAmountInfo } from "../../mahojong/hora";
+import type { MenzenPais } from "../../mahojong/hand";
 
 const dummyGame = new PracticeGame({
   rule: defaultRule,
@@ -46,7 +43,7 @@ const dummyGame = new PracticeGame({
 });
 
 /** 練習ページのコンポーネント */
-const PracticePage = (props: PracticePageProps) => {
+const PracticePage = () => {
   const dispatch = useAppDispatch();
 
   const settings = useAppSelector(selectSettings);
@@ -117,7 +114,7 @@ const PracticePage = (props: PracticePageProps) => {
     options?: {
       isTsumoCut?: boolean;
       isRiichi?: boolean;
-    }
+    },
   ) => {
     const istsumoCut =
       options?.isTsumoCut === undefined ? false : options.isTsumoCut;
@@ -152,7 +149,7 @@ const PracticePage = (props: PracticePageProps) => {
           paisi: paishi,
           doraDisplayPais: doraDisplayPais,
           backDoraDisplayPais: [],
-        })
+        }),
       );
     } else {
       dispatch(
@@ -160,7 +157,7 @@ const PracticePage = (props: PracticePageProps) => {
           paisi: paishi,
           doraDisplayPais: doraDisplayPais,
           backDoraDisplayPais: [],
-        })
+        }),
       );
     }
 
@@ -174,7 +171,7 @@ const PracticePage = (props: PracticePageProps) => {
         paisi: game.paishi,
         doraDisplayPais: doraDisplayPais,
         backDoraDisplayPais: [],
-      })
+      }),
     );
     dispatch(setMode("Result"));
   };
@@ -183,7 +180,7 @@ const PracticePage = (props: PracticePageProps) => {
   const executeHora = (
     hora: HoraAmountInfo,
     paishi?: string,
-    backDoraDisplayPais?: string[]
+    backDoraDisplayPais?: string[],
   ) => {
     dispatch(
       setHoraResult({
@@ -193,7 +190,7 @@ const PracticePage = (props: PracticePageProps) => {
           doraDisplayPais: doraDisplayPais,
           backDoraDisplayPais: backDoraDisplayPais ?? [],
         },
-      })
+      }),
     );
     dispatch(setMode("Result"));
   };
@@ -212,8 +209,9 @@ const PracticePage = (props: PracticePageProps) => {
 
   // 自動的にアクションを実行するフック
   useEffect(() => {
-    let drawTimer: NodeJS.Timeout | undefined = undefined;
-    let autoTsumoCutTimer: NodeJS.Timeout | undefined = undefined;
+    let drawTimer: ReturnType<typeof setTimeout> | undefined = undefined;
+    let autoTsumoCutTimer: ReturnType<typeof setTimeout> | undefined =
+      undefined;
 
     // 流局した場合
     if (isDrawnGame) {
@@ -613,7 +611,7 @@ const PracticePage = (props: PracticePageProps) => {
 /** 手牌を文字列配列に整形する */
 export const shapeMenzenPais = (
   menzenPais: MenzenPais,
-  tsumoPai: string | null
+  tsumoPai: string | null,
 ): string[] => {
   const pais: string[] = [];
 

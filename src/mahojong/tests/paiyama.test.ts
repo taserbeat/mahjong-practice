@@ -1,4 +1,5 @@
-import Pai from "../pai";
+import { describe, expect, it } from "vitest";
+import type { Pai } from "../pai";
 import Paiyama from "../paiyama";
 
 describe("static getDora メソッド", () => {
@@ -202,7 +203,7 @@ describe("openNewDoraDisplayPai メソッド", () => {
     const numDora = paiyama.doraDisplayPais.length;
 
     expect(paiyama.openNewDoraDisplayPai().doraDisplayPais.length).toBe(
-      numDora + 1
+      numDora + 1,
     );
   });
 
@@ -211,7 +212,7 @@ describe("openNewDoraDisplayPai メソッド", () => {
     paiyama.kanTsumo();
 
     expect(
-      paiyama.openNewDoraDisplayPai().lock().backDoraDisplayPais?.length
+      paiyama.openNewDoraDisplayPai().lock().backDoraDisplayPais?.length,
     ).toBe(2);
   });
 

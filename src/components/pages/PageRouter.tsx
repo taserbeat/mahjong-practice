@@ -1,15 +1,14 @@
-import React from "react";
 import { useAppSelector } from "../../app/hooks";
-import { ModeName, selectCurrentMode } from "../../features/mode/modeSlice";
 import SettingPage from "./SettingPage";
 import PracticePage from "./PracticePage";
 import ResultPage from "./ResultPage";
-
-/** ページルーターのProps */
-interface PageRouterProps {}
+import {
+  selectCurrentMode,
+  type ModeName,
+} from "../../features/mode/modeSlice";
 
 /** ページルーター */
-const PageRouter = (props: PageRouterProps) => {
+const PageRouter = () => {
   const currentModeName = useAppSelector(selectCurrentMode);
 
   return routePage(currentModeName);

@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import Pai from "../mahojong/pai";
-import { PracticeGame } from "../mahojong/practice";
 import Hand from "../mahojong/hand";
+import type { Pai } from "../mahojong/pai";
 import { calcImproveShantenPais, calcNumShanten } from "../mahojong/shanten";
 
 /** 受け入れ情報を計算するフックのProps */

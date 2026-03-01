@@ -1,14 +1,14 @@
-import { HoraYakuInfo } from "../../mahojong/hora";
 import DoraDisplayPais from "../pai/DoraDisplayPais";
 import { useAppSelector } from "../../app/hooks";
 import { selectSettings } from "../../features/settings/settingsSlice";
-import { Rule } from "../../mahojong/rule";
 import Hand from "../../mahojong/hand";
 import { shapeMenzenPais } from "../pages/PracticePage";
 import MahojongPai from "../pai/MahojongPai";
 import FuloMentsu from "../pai/FuloMentsu";
 
 import "../../styles/result/HoraResultDisplay.scss";
+import type { HoraYakuInfo } from "../../mahojong/hora";
+import type { Rule } from "../../mahojong/rule";
 
 /** 和了結果の表示するコンポーネントのProps */
 interface HoraResultDisplayProps {
@@ -160,7 +160,7 @@ const getManName = (props: HoraResultDisplayProps, rule: Rule): string => {
     } else if (11 <= numHan && numHan <= 12) {
       // 11飜 ~ 12飜の場合
       return "三倍満";
-    } else {
+    } else if (numHan >= 13) {
       // 13飜数以上の場合
       return "数え役満";
     }

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { Kawa } from "../kawa";
 
 describe("コンストラクタ", () => {
@@ -32,14 +33,10 @@ describe("dapaiメソッド", () => {
   });
 
   it("リーチを表現できること", () => {
-    const kawa = new Kawa();
-
     expect(new Kawa().dapai("m1*").pai.pop()).toBe("m1*");
   });
 
   it("ツモ切りリーチを表現できること", () => {
-    const kawa = new Kawa();
-
     expect(new Kawa().dapai("m1_*").pai.pop()).toBe("m1_*");
   });
 });

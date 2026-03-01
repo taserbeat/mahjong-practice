@@ -1,5 +1,5 @@
 import Hand from "./hand";
-import { Mentsu } from "./pai";
+import type { Mentsu } from "./pai";
 
 /** 河を表現するクラス */
 export class Kawa {
