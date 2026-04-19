@@ -37,6 +37,9 @@ type HaipaiSettings =
 /** 風 (0: 東、1: 南、2: 西、3: 北) */
 export type Kaze = 0 | 1 | 2 | 3;
 
+/** 風の表示名 */
+export type KazeName = "東" | "南" | "西" | "北";
+
 /** 実行可能アクション */
 export type LegalAction =
   | { name: "Hora" }

@@ -25,44 +25,43 @@ const ResultPage = () => {
 
   return (
     <div className="wrapper">
-      <h2>リザルト画面</h2>
+      {/* タイトル */}
+      <h2 className="title">リザルト画面</h2>
 
-      <div className="result-wrapper">
-        {/* リザルトコンテナ */}
-        <div className="result-container">
-          {horaResult.isKyusyu ? (
-            "九種九牌"
-          ) : horaResult.isTenpai ? (
-            "テンパイ"
-          ) : horaResult.horaInfo === null ? (
-            "ノーテン"
-          ) : (
-            <HoraResultDisplay
-              horaPoint={horaResult.horaInfo.horaPoint}
-              numHan={horaResult.horaInfo.numHan}
-              hu={horaResult.horaInfo.hu}
-              horaYakuInfos={horaResult.horaInfo.horaYakuInfos}
-              numCompositeYakuman={horaResult.horaInfo.numCompositeYakuman}
-              doraDisplayPais={horaResult.situationInfo.doraDisplayPais}
-              backDoraDisplayPais={horaResult.situationInfo.backDoraDisplayPais}
-              paishi={horaResult.situationInfo.paisi}
-            />
-          )}
+      {/* リザルト */}
+      <div className="result-container">
+        {horaResult.isKyusyu ? (
+          "九種九牌"
+        ) : horaResult.isTenpai ? (
+          "テンパイ"
+        ) : horaResult.horaInfo === null ? (
+          "ノーテン"
+        ) : (
+          <HoraResultDisplay
+            horaPoint={horaResult.horaInfo.horaPoint}
+            numHan={horaResult.horaInfo.numHan}
+            hu={horaResult.horaInfo.hu}
+            horaYakuInfos={horaResult.horaInfo.horaYakuInfos}
+            numCompositeYakuman={horaResult.horaInfo.numCompositeYakuman}
+            doraDisplayPais={horaResult.situationInfo.doraDisplayPais}
+            backDoraDisplayPais={horaResult.situationInfo.backDoraDisplayPais}
+            paishi={horaResult.situationInfo.paisi}
+          />
+        )}
+      </div>
+
+      {/* ボタングループ */}
+      <div className="btn-group">
+        <div className="btn-container">
+          <Button variant="contained" onClick={onContinueWithSameSetting}>
+            もう一度
+          </Button>
         </div>
 
-        {/* ボタングループ */}
-        <div className="btn-group">
-          <div className="btn-container">
-            <Button variant="contained" onClick={onContinueWithSameSetting}>
-              もう一度
-            </Button>
-          </div>
-
-          <div className="btn-container">
-            <Button variant="contained" onClick={onChangeSetting}>
-              設定変更
-            </Button>
-          </div>
+        <div className="btn-container">
+          <Button variant="contained" onClick={onChangeSetting}>
+            設定変更
+          </Button>
         </div>
       </div>
     </div>
