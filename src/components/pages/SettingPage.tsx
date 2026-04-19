@@ -124,6 +124,7 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
@@ -139,6 +140,7 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
@@ -154,6 +156,7 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
@@ -169,6 +172,7 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
@@ -184,6 +188,7 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
@@ -197,7 +202,7 @@ const SettingPage = () => {
                 key={`haipai_${pai}_${i}`}
                 onClick={() => onHaipaiClick(pai)}
               >
-                <MahojongPai pai={pai} />
+                <MahojongPai pai={pai} isPointer />
               </div>
             ))}
           </div>
