@@ -9,8 +9,8 @@
   flex-direction: column;
   width: 100%;
   align-items: center;
-
   font-size: 24px;
+  color: params.$color_white;
 }
 
 // 上段コンテナ
@@ -31,10 +31,7 @@
 // 中段コンテナ
 .result_center-container {
   display: flex;
-  height: 324px;
-
-  // background-color: lightgreen;
-  border: solid 1px params.$color_gray;
+  min-height: 200px;
   width: 100%;
 }
 
@@ -43,14 +40,15 @@
   display: flex;
   flex-direction: column;
   margin: 2rem auto 2rem 8rem;
-
   flex-wrap: wrap;
 }
 
 // 役情報
 .yaku-info {
   display: flex;
-  margin: 0.5rem 2rem;
+  margin: 0.4rem 2rem;
+  color: params.$color_white;
+  font-size: 1rem;
 }
 
 // 点数
@@ -59,37 +57,35 @@
   flex-direction: column;
   align-items: start;
   margin: auto 0 0 0;
+  font-weight: 700;
 }
 
 // 下段コンテナ
 .result_lower-container {
   display: flex;
-  margin: auto 0 0 0;
+  margin: 1rem 0 0 0;
+  padding: 0.5rem 0.75rem;
 }
 
 // 手牌
 .result_hand {
   display: flex;
 
-  // 手牌 (ツモ牌以外)
   &__already {
     display: flex;
     justify-content: center;
   }
 
-  // 副露
   &__fulos {
     display: flex;
     margin: 0 1rem;
 
     .result_fulo-mentsu {
-      // display: flex;
       margin: 0 0.5rem;
     }
   }
 
-  // ツモ牌
   &__tsumopai {
-    margin: 0rem 0rem 0rem 2rem;
+    margin: 0rem 0rem 0rem 0.5rem;
   }
 }

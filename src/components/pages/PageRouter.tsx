@@ -25,10 +25,10 @@ const routePage = (modeName: ModeName) => {
 
     case "Result":
       return <ResultPage />;
-  }
 
-  // NOTE: ここに到達することはないが、念の為returnする
-  return <></>;
+    default:
+      throw new Error(`不正なモードです。: ${modeName}`);
+  }
 };
 
 export default PageRouter;

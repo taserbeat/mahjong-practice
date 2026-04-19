@@ -5,30 +5,42 @@
 //* * * * * * * * * * ResultPage * * * * * * * * * *
 
 .wrapper {
-  text-align: center;
-}
-
-.result-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1rem 0 0 0;
-}
+  padding: 0.5rem 0.75rem;
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
 
-.result-container {
-  display: flex;
+  .title {
+    margin: 0 0 0.5rem 0;
+  }
 
-  width: 1000px;
-  height: 600px;
+  .result-container {
+    display: flex;
+    width: min(1000px, 100%);
+    flex: 1;
+    min-height: 0;
+    padding: 2rem;
+    background: params.$mahjong_felt_dark;
+    border: 2px solid params.$mahjong_gold;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: params.$color_white;
+  }
 
-  // background-color: lightblue;
-}
+  .btn-group {
+    display: flex;
+    margin: 1rem 0 0 0;
+    gap: 1.5rem;
 
-.btn-group {
-  display: flex;
-  margin: 2rem 0 0 0;
-}
-
-.btn-container {
-  margin: 0 1rem;
+    .btn-container {
+      margin: 0 1rem;
+    }
+  }
 }

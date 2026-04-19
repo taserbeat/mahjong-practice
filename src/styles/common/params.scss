@@ -4,9 +4,20 @@
 $color_white: #ffffff;
 $color_gray: #3f3f3f;
 
-$color_theme: #0071bd; // rgb(0, 113, 189)
-$color_base: #1b4059; // rgb(28, 65, 90)
-$color_back: #e5f0f8; // rgb(230, 240, 247)
+$color_theme: #0071bd;
+$color_base: #1b4059;
+$color_back: #e5f0f8;
+
+/* 麻雀テーマ */
+$mahjong_felt: #1a6b3a; // 卓上フェルト緑
+$mahjong_felt_dark: #124d2a; // 濃い緑
+$mahjong_felt_light: #2a8a4e; // 明るい緑
+$mahjong_table: #0f3d20; // 卓の縁
+$mahjong_gold: #c9a84c; // 金色アクセント
+$mahjong_gold_light: #e8c96a;
+$mahjong_header_bg: #1a2e1a; // ヘッダー背景
+$mahjong_panel_bg: rgba(255, 255, 255, 1); // パネル背景
+$mahjong_panel_border: rgba(127, 127, 127, 0.25); // パネルのボーダー線
 
 /* 大きさ */
 $size_header_height: 50px;

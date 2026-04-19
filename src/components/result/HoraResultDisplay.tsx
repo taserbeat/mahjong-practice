@@ -6,9 +6,9 @@ import { shapeMenzenPais } from "../pages/PracticePage";
 import MahojongPai from "../pai/MahojongPai";
 import FuloMentsu from "../pai/FuloMentsu";
 
-import "../../styles/result/HoraResultDisplay.scss";
 import type { HoraYakuInfo } from "../../mahojong/hora";
 import type { Rule } from "../../mahojong/rule";
+import "../../styles/result/HoraResultDisplay.scss";
 
 /** 和了結果の表示するコンポーネントのProps */
 interface HoraResultDisplayProps {

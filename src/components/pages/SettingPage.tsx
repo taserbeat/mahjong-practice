@@ -92,8 +92,9 @@ const SettingPage = () => {
   };
 
   return (
-    <div className="setting-wrappr">
-      <h2>設定画面</h2>
+    <div className="wrappr">
+      {/* タイトル */}
+      <h2 className="title">設定画面</h2>
 
       {/* 設定コンテナ */}
       <div className="setting-container">
@@ -124,6 +125,7 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
@@ -139,6 +141,7 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
@@ -154,6 +157,7 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
@@ -169,6 +173,7 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
@@ -184,37 +189,41 @@ const SettingPage = () => {
                   <MahojongPai
                     pai={pai}
                     isShadow={!paiyamaSetting.includes(pai)}
+                    isPointer
                   />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* 配牌 */}
-          <div className="haipai-setting-container__haipai">
-            {haipaiSetting.map((pai, i) => (
-              <div
-                key={`haipai_${pai}_${i}`}
-                onClick={() => onHaipaiClick(pai)}
-              >
-                <MahojongPai pai={pai} />
-              </div>
-            ))}
+          {/* 配牌設定 */}
+          <div className="haipai-wrapper">
+            <div className="haipai-container">
+              {haipaiSetting.map((pai, i) => (
+                <div
+                  key={`haipai_${pai}_${i}`}
+                  onClick={() => onHaipaiClick(pai)}
+                >
+                  <MahojongPai pai={pai} isPointer />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className="button-container">
-        <div className="button-container__button">
-          <Button variant="contained" onClick={onStartClick}>
-            開始
-          </Button>
-        </div>
+          {/* ボタンコンテナ */}
+          <div className="button-container">
+            <div className="button-container__button">
+              <Button variant="contained" onClick={onStartClick}>
+                開始
+              </Button>
+            </div>
 
-        <div className="button-container__button">
-          <Button variant="contained" onClick={onResetClick}>
-            リセット
-          </Button>
+            <div className="button-container__button">
+              <Button variant="contained" onClick={onResetClick}>
+                リセット
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

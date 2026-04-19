@@ -8,7 +8,11 @@ import Switch from "@mui/material/Switch";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setMode } from "../../features/mode/modeSlice";
-import { PracticeGame } from "../../mahojong/practice";
+import {
+  PracticeGame,
+  type Kaze,
+  type KazeName,
+} from "../../mahojong/practice";
 import {
   selectIsAssistEnabled,
   selectSettings,
@@ -31,10 +35,10 @@ import {
   selectPaiyamaSetting,
 } from "../../features/haipai/haipaiSlice";
 import useAccept from "../../hooks/useAccept";
-
-import "../../styles/pages/PracticePage.scss";
 import type { HoraAmountInfo } from "../../mahojong/hora";
 import type { MenzenPais } from "../../mahojong/hand";
+
+import "../../styles/pages/PracticePage.scss";
 
 const dummyGame = new PracticeGame({
   rule: defaultRule,
@@ -67,6 +71,12 @@ const PracticePage = () => {
 
   // 副露面子
   const fulos = game.fulos;
+
+  // 場風
+  const bakazeName = getKazeName(settings.bakaze);
+
+  // 自風
+  const jikazeName = getKazeName(settings.jikaze);
 
   // ドラ表示牌
   const doraDisplayPais = game.doraDisplayPais;
@@ -247,331 +257,283 @@ const PracticePage = () => {
   }, [isDrawnGame, shouldAutoTsumoCut, tsumoPai, lastRenderdAt]);
 
   return (
-    <div>
-      <div className="game">
-        {/* 左コンテナ */}
-        <div className="left-container">
-          {/* ドラ表示牌 */}
-          <div className="dora-displays-wrapper">
-            <DoraDisplayPais doraDisplayPais={doraDisplayPais} />
-          </div>
+    <div className="game">
+      {/* 左コンテナ */}
+      <div className="left-container">
+        {/* 場風・自風表示 */}
+        <div className="kaze-info">{`${bakazeName}1局 ${jikazeName}家`}</div>
+
+        {/* ドラ表示牌 */}
+        <div className="dora-displays-wrapper">
+          <DoraDisplayPais doraDisplayPais={doraDisplayPais} />
+        </div>
+      </div>
+
+      {/* 中央コンテナ */}
+      <div className="center-container">
+        {/* 河 */}
+        <div className="kawa-wrapper">
+          <KawaPais pais={kawa.pai} />
         </div>
 
-        {/* 中央コンテナ */}
-        <div className="center-container">
-          {/* 河 */}
-          <div className="kawa-wrapper">
-            <KawaPais pais={kawa.pai} />
+        {/* 実行可能アクション */}
+        {isRiichiSelectMode ? (
+          // 立直モードで打牌を選択中
+          <div className="legal-actions">
+            <div className="legal-action">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setIsRiichiSelectMode(false);
+                }}
+              >
+                キャンセル
+              </Button>
+            </div>
           </div>
-
-          {/* 実行可能アクション */}
-          {isRiichiSelectMode ? (
-            // 立直モードで打牌を選択中
-            <div className="legal-actions">
+        ) : (
+          // 通常の打牌を選択中
+          <div className="legal-actions">
+            {riichiAction?.name === "Riichi" && (
               <div className="legal-action">
                 <Button
                   variant="contained"
                   onClick={() => {
-                    setIsRiichiSelectMode(false);
+                    setIsRiichiSelectMode(true);
                   }}
                 >
-                  キャンセル
+                  立直
                 </Button>
               </div>
-            </div>
-          ) : (
-            // 通常の打牌を選択中
-            <div className="legal-actions">
-              {riichiAction?.name === "Riichi" && (
-                <div className="legal-action">
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      setIsRiichiSelectMode(true);
-                    }}
-                  >
-                    立直
-                  </Button>
-                </div>
-              )}
+            )}
 
-              {kanAction && (
-                <div className="legal-action">
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      if (kanMentsuList.length > 1) {
-                        setisKanSelectMode(true);
-                        return;
-                      }
-
-                      executeKan(kanMentsuList[0]);
-                    }}
-                  >
-                    カン
-                  </Button>
-                </div>
-              )}
-
-              {horaAction && (
-                <div className="legal-action">
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      const hora = game.hora();
-                      const paishi = game.paishi;
-                      const backDoraDisplayPais =
-                        game.backDoraDisplayPais ?? [];
-                      executeHora(hora, paishi, backDoraDisplayPais);
-                    }}
-                  >
-                    ツモ
-                  </Button>
-                </div>
-              )}
-
-              {kyusyuAction && (
-                <div className="legal-action">
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      executeKyusyu();
-                    }}
-                  >
-                    流局
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* 手牌 */}
-          <div className="hand_menzen">
-            <div className="hand_menzen__already">
-              {displayMenzenPais.map((pai, i) => (
-                <div
-                  key={`${pai}_${i}`}
+            {kanAction && (
+              <div className="legal-action">
+                <Button
+                  variant="contained"
                   onClick={() => {
-                    // 流局の場合は打牌できない
-                    if (isDrawnGame) {
+                    if (kanMentsuList.length > 1) {
+                      setisKanSelectMode(true);
                       return;
                     }
 
-                    // 立直済みの場合は門前の手牌を打牌できない
-                    if (isRiichied) {
-                      return;
-                    }
-
-                    // 立直をかけるのに、テンパイが崩れる牌は打牌できない
-                    if (isRiichiSelectMode && !riichiDapais.includes(pai)) {
-                      return;
-                    }
-
-                    // 打牌する
-                    executeDapai(pai, {
-                      isTsumoCut: false,
-                      isRiichi: isRiichiSelectMode,
-                    });
+                    executeKan(kanMentsuList[0]);
                   }}
                 >
-                  <MahojongPai
-                    pai={pai}
-                    isShadow={isRiichiSelectMode && !riichiDapais.includes(pai)}
-                    isFloatingOnHover
-                  />
-                </div>
-              ))}
-            </div>
+                  カン
+                </Button>
+              </div>
+            )}
 
-            {tsumoPai && (
+            {horaAction && (
+              <div className="legal-action">
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    const hora = game.hora();
+                    const paishi = game.paishi;
+                    const backDoraDisplayPais = game.backDoraDisplayPais ?? [];
+                    executeHora(hora, paishi, backDoraDisplayPais);
+                  }}
+                >
+                  ツモ
+                </Button>
+              </div>
+            )}
+
+            {kyusyuAction && (
+              <div className="legal-action">
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    executeKyusyu();
+                  }}
+                >
+                  流局
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 手牌 */}
+        <div className="hand_menzen">
+          <div className="hand_menzen__already">
+            {displayMenzenPais.map((pai, i) => (
               <div
-                className="hand_menzen__tsumopai"
+                key={`${pai}_${i}`}
                 onClick={() => {
                   // 流局の場合は打牌できない
                   if (isDrawnGame) {
                     return;
                   }
 
+                  // 立直済みの場合は門前の手牌を打牌できない
+                  if (isRiichied) {
+                    return;
+                  }
+
                   // 立直をかけるのに、テンパイが崩れる牌は打牌できない
-                  if (
-                    isRiichiSelectMode &&
-                    !riichiDapais.includes(tsumoPai + "_")
-                  ) {
+                  if (isRiichiSelectMode && !riichiDapais.includes(pai)) {
                     return;
                   }
 
-                  // 自動ツモ切り中の場合は、ユーザーが打牌できないようにする
-                  // (自動ツモ切りの処理側で打牌する)
-                  if (shouldAutoTsumoCut) {
-                    return;
-                  }
-
-                  executeDapai(tsumoPai, {
-                    isTsumoCut: true,
+                  // 打牌する
+                  executeDapai(pai, {
+                    isTsumoCut: false,
                     isRiichi: isRiichiSelectMode,
                   });
                 }}
               >
                 <MahojongPai
-                  pai={tsumoPai}
-                  isShadow={
-                    isRiichiSelectMode && !riichiDapais.includes(tsumoPai + "_")
-                  }
+                  pai={pai}
+                  isShadow={isRiichiSelectMode && !riichiDapais.includes(pai)}
                   isFloatingOnHover
                 />
               </div>
-            )}
-          </div>
-
-          {/* 操作ボタン */}
-          <div className="controll-buttons">
-            {/* 最初からやり直す */}
-            <div className="controll-button">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  game.initialize();
-                  game.tsumo();
-                  updateRender();
-                }}
-              >
-                最初から
-              </Button>
-            </div>
-
-            {/* 設定画面へ */}
-            <div className="controll-button">
-              <Button
-                variant="contained"
-                onClick={() => dispatch(setMode("Setting"))}
-              >
-                設定へ
-              </Button>
-            </div>
-
-            {/* カン選択を表示する(デバッグ向け) */}
-            {/* <div className="controll-button">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setisKanSelectMode(true);
-                }}
-              >
-                カン選択
-              </Button>
-            </div> */}
-
-            {/* 和了する(デバッグ向け) */}
-            {/* <div className="controll-button">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  // 和了情報
-                  const hora: HoraAmountInfo = {
-                    horaPoint: 12000,
-                    hu: 20,
-                    incomes: [],
-                    horaYakuInfos: [
-                      { name: "立直", numHan: 1 },
-                      { name: "門前清自摸和", numHan: 1 },
-                      { name: "平和", numHan: 1 },
-                      { name: "断幺九", numHan: 1 },
-                      { name: "ドラ", numHan: 1 },
-                    ],
-                    numHan: 5,
-                  };
-
-                  // 牌姿
-                  const paishi = "m234678p345s2267s8";
-
-                  // 裏ドラ表示牌
-                  const backDoraDisplayPais: string[] = [];
-
-                  executeHora(hora, paishi, backDoraDisplayPais);
-                }}
-              >
-                和了
-              </Button>
-            </div> */}
-          </div>
-        </div>
-
-        {/* 右コンテナ */}
-        <div className="right-container">
-          {/* アシスト機能 */}
-          <div className="assist-wrapper">
-            <div className="assist-switch">
-              <FormControl component="fieldset">
-                <FormGroup aria-label="position" row>
-                  <FormControlLabel
-                    control={<Switch color="primary" />}
-                    label="アシストモード"
-                    labelPlacement="end"
-                    checked={isAssistEnabled}
-                    onChange={() => {
-                      dispatch(setIsAssistEnabled(!isAssistEnabled));
-                    }}
-                  />
-                </FormGroup>
-              </FormControl>
-            </div>
-
-            {/* 受け入れ情報 */}
-            {isAssistEnabled && (
-              <ul className="accept-infos">
-                {acceptInfos.map((acceptInfo, i) => (
-                  <li className="accept-info" key={`accept-info_${i}`}>
-                    {/* 1行目 (打牌、有効牌の種類・枚数) */}
-                    <div className="accept-info__row1">
-                      {/* 打牌 */}
-                      <div className="accept-info__row1__cut-pai">
-                        <MahojongPai pai={acceptInfo.cutPai} />
-                      </div>
-
-                      {/* 有効牌の種類・枚数 */}
-                      <div className="accept-info__row1__count">{`${acceptInfo.acceptsKinds.length}種${acceptInfo.acceptsCount}枚`}</div>
-                    </div>
-
-                    {/* 2行目 (有効牌の画像) */}
-                    <div className="accept-info__row2">
-                      {acceptInfo.acceptsKinds.map((pai, i) => (
-                        <div
-                          className="accept-info__row2__accepted-pai"
-                          key={`accepted-pai_${i}`}
-                        >
-                          <MahojongPai pai={pai} />
-                        </div>
-                      ))}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className="fulo-wrapper">
-            {fulos.map((fuloMentsu, i) => (
-              <div className="fulo-box" key={`fulo-box_${i}`}>
-                <FuloMentsu fuloMentsu={fuloMentsu} />
-              </div>
             ))}
           </div>
+
+          {tsumoPai && (
+            <div
+              className="hand_menzen__tsumopai"
+              onClick={() => {
+                // 流局の場合は打牌できない
+                if (isDrawnGame) {
+                  return;
+                }
+
+                // 立直をかけるのに、テンパイが崩れる牌は打牌できない
+                if (
+                  isRiichiSelectMode &&
+                  !riichiDapais.includes(tsumoPai + "_")
+                ) {
+                  return;
+                }
+
+                // 自動ツモ切り中の場合は、ユーザーが打牌できないようにする
+                // (自動ツモ切りの処理側で打牌する)
+                if (shouldAutoTsumoCut) {
+                  return;
+                }
+
+                executeDapai(tsumoPai, {
+                  isTsumoCut: true,
+                  isRiichi: isRiichiSelectMode,
+                });
+              }}
+            >
+              <MahojongPai
+                pai={tsumoPai}
+                isShadow={
+                  isRiichiSelectMode && !riichiDapais.includes(tsumoPai + "_")
+                }
+                isFloatingOnHover
+              />
+            </div>
+          )}
+        </div>
+
+        {/* 操作ボタン */}
+        <div className="controll-buttons">
+          {/* 最初からやり直す */}
+          <div className="controll-button">
+            <Button
+              variant="contained"
+              onClick={() => {
+                game.initialize();
+                game.tsumo();
+                updateRender();
+              }}
+            >
+              最初から
+            </Button>
+          </div>
+
+          {/* 設定画面へ */}
+          <div className="controll-button">
+            <Button
+              variant="contained"
+              onClick={() => dispatch(setMode("Setting"))}
+            >
+              設定へ
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* 右コンテナ */}
+      <div className="right-container">
+        {/* アシスト機能 */}
+        <div className="assist-wrapper">
+          <div className="assist-switch">
+            <FormControl component="fieldset">
+              <FormGroup aria-label="position" row>
+                <FormControlLabel
+                  control={<Switch color="primary" />}
+                  label="アシストモード"
+                  labelPlacement="end"
+                  checked={isAssistEnabled}
+                  onChange={() => {
+                    dispatch(setIsAssistEnabled(!isAssistEnabled));
+                  }}
+                />
+              </FormGroup>
+            </FormControl>
+          </div>
+
+          {/* 受け入れ情報 */}
+          {isAssistEnabled && (
+            <ul className="accept-infos">
+              {acceptInfos.map((acceptInfo, i) => (
+                <li className="accept-info" key={`accept-info_${i}`}>
+                  {/* 1行目 (打牌、有効牌の種類・枚数) */}
+                  <div className="accept-info__row1">
+                    {/* 打牌 */}
+                    <div className="accept-info__row1__cut-pai">
+                      <MahojongPai pai={acceptInfo.cutPai} />
+                    </div>
+
+                    {/* 有効牌の種類・枚数 */}
+                    <div className="accept-info__row1__count">{`${acceptInfo.acceptsKinds.length}種${acceptInfo.acceptsCount}枚`}</div>
+                  </div>
+
+                  {/* 2行目 (有効牌の画像) */}
+                  <div className="accept-info__row2">
+                    {acceptInfo.acceptsKinds.map((pai, i) => (
+                      <div
+                        className="accept-info__row2__accepted-pai"
+                        key={`accepted-pai_${i}`}
+                      >
+                        <MahojongPai pai={pai} />
+                      </div>
+                    ))}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* 副露牌表示エリア */}
+        <div className="fulo-wrapper">
+          {fulos.map((fuloMentsu, i) => (
+            <div className="fulo-box" key={`fulo-box_${i}`}>
+              <FuloMentsu fuloMentsu={fuloMentsu} />
+            </div>
+          ))}
         </div>
       </div>
 
       {/* 副露選択のモーダル */}
       <Modal
+        className="fulo-select-modal"
         open={isKanSelectMode}
         onClose={() => {
           setisKanSelectMode(false);
         }}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
       >
-        <div className="fulo-selector-wrapper">
+        <div className="fulo-select-wrapper">
           {/* 副露のキャンセルボタン */}
           <div className="fulo-cancel-btn-wrapper">
             <Button
@@ -588,7 +550,7 @@ const PracticePage = () => {
           </div>
 
           {/* 副露の選択エリア */}
-          <div className="fulo-selector">
+          <div className="fulo-select-area">
             {kanMentsuList.map((fuloMentsu, i) => {
               return (
                 // 副露の選択肢
@@ -700,6 +662,21 @@ export const shapeMenzenPais = (
   }
 
   return pais;
+};
+
+// HACK: 共通化して他コンポーネントでも再利用できるようにする
+/** 風の表示名を取得する */
+const getKazeName = (kaze: Kaze): KazeName => {
+  switch (kaze) {
+    case 0:
+      return "東";
+    case 1:
+      return "南";
+    case 2:
+      return "西";
+    case 3:
+      return "北";
+  }
 };
 
 export default PracticePage;

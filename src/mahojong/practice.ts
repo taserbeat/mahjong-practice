@@ -11,7 +11,7 @@ import type { Mentsu, Pai, RonPai } from "./pai";
 import type { Rule } from "./rule";
 import * as Shanten from "./shanten";
 
-/** 1人麻雀練習機の設定値 */
+/** 1人麻雀の設定値 */
 export type PracticeSettings = {
   /** ルール */
   rule: Rule;
@@ -37,6 +37,9 @@ type HaipaiSettings =
 /** 風 (0: 東、1: 南、2: 西、3: 北) */
 export type Kaze = 0 | 1 | 2 | 3;
 
+/** 風の表示名 */
+export type KazeName = "東" | "南" | "西" | "北";
+
 /** 実行可能アクション */
 export type LegalAction =
   | { name: "Hora" }
@@ -48,7 +51,7 @@ export type LegalAction =
 /** ステータス (主に実行可能アクションの算出の内部判定処理で使用) */
 type PracticeStatus = "Haipai" | "Tsumo" | "Hora" | "Kan" | "Dapai";
 
-/** 1人麻雀練習機のクラス */
+/** 1人麻雀練習のクラス */
 export class PracticeGame {
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   // privateフィールド
