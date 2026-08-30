@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import pkg from "./package.json";
+import packageJson from "./package.json" with { type: "json" };
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -18,6 +18,6 @@ export default defineConfig({
     outDir: "build",
   },
   define: {
-    __APP_VERSION__: JSON.stringify(pkg.version),
+    __APP_VERSION__: JSON.stringify(packageJson.version),
   },
 });
